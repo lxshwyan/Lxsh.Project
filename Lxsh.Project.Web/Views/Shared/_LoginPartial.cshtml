@@ -1,0 +1,22 @@
+﻿@using Lxsh.Project.Common
+
+@if (Context.Session["CurrentUser"] != null && Context.Session["CurrentUser"] is CurrentUser)
+{
+    using (Html.BeginForm("Logout", "Login", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("您好 " + ((CurrentUser)Context.Session["CurrentUser"]).Name + "!", "Index", "Home", routeValues: null, htmlAttributes: new { title = ((CurrentUser)Context.Session["CurrentUser"]).Name })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("登录", "index", "Login", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

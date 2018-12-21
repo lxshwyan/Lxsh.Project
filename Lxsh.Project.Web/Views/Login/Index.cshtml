@@ -1,0 +1,78 @@
+﻿@{
+    Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>后台管理</title>
+    <link href="../style/login/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="login_box">
+        <div class="login_l_img"><img src="../images/login/login-img.png" /></div>
+        <div class="login">
+            <div class="login_logo"><a href="#"><img src="../images/login/login_logo.png" /></a></div>
+            <div class="login_name">
+                <p>后台管理系统</p>
+            </div>
+                <input name="userName" id="userName" type="text" value="用户名" onfocus="this.value=''" onblur="if(this.value==''){this.value='用户名'}" tabindex="1">
+                <span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();"  tabindex="2">密码</span>
+                <input name="password" type="password" id="password" style="display:none;" onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'};"/>
+                <input value="登录" id="btnSubmit"  style="width:100%;" type="submit" tabindex="3">
+        </div>
+        <div class="copyright">LxshShare有限公司 版权所有©2016-2018 技术支持电话：000-00000000</div>
+    </div>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/layer/layer.js"></script>
+    <script type="text/javascript">
+        var rootUrl = '@Url.Content("~/")';
+       
+       //立即执行函数 打开页面输入框获取焦点
+       (function wp_attempt_focus() {
+                setTimeout(function () {
+                    try {
+                        d = $("#userName");
+                        d.focus();
+                        d.select();
+                    } catch (e) { }
+                }, 200);
+        })();
+        //初始化函数
+       $(function () {
+            //增加登录事件
+            $("#btnSubmit").click(function () {
+                $.post(rootUrl + 'Login/SubmitLogin', { userName: $("#userName").val(), password: $("#password").val(), verify: 'noVerify' }, function (res) {
+                var resJson = JSON.parse(res);
+                    if (resJson.Result == 1) {
+                        window.location.href = rootUrl + "Home/Index"
+                    }
+                    else
+                    {
+                    layer.alert(resJson.DebugMessage, {
+                        skin: 'layui-layer-lan'
+                        , closeBtn: 0
+                        , anim: 1//动画类型
+                    });
+                }
+                   
+            });
+            })
+            //增加键盘事件
+            $(document).keydown(function (event) {
+                if (event.keyCode == 13) 
+                {
+                   event.returnValue = false;
+                   event.cancel = true;
+                   $("#btnSubmit").click();
+                }
+            });
+           
+     })
+    </script>
+</body>
+</html >

@@ -1,0 +1,572 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/knockout-3.3.0.debug.js"></script>
+
+<!-- Scheduler 统计信息 -->
+<h1> Scheduler 统计信息 <input type="button" data-bind="click:flushall" value="刷新所有数据" /></h1>
+<table>
+    <tbody>
+        <tr>
+            <td>SchedulerID</td>
+            <td>SchedulerName</td>
+            <td>已暂停</td>
+            <td>当前线程池线程数</td>
+            <td>启动状态</td>
+            <td>已关闭</td>
+            <td>job被执行的总次数</td>
+            <td>远程代理Scheduler</td>
+            <td>JobStore类型</td>
+            <td>操作</td>
+        </tr>
+        <tr>
+            <td data-bind="text:schedulerinfo.SchedulerInstanceId"></td>
+            <td data-bind="text:schedulerinfo.SchedulerName"></td>
+            <td data-bind="text:schedulerinfo.InStandbyMode"></td>
+            <td data-bind="text:schedulerinfo.ThreadPoolSize"></td>
+            <td data-bind="text:schedulerinfo.Started"></td>
+            <td data-bind="text:schedulerinfo.Shutdown"></td>
+            <td data-bind="text:schedulerinfo.NumberOfJobsExecuted"></td>
+            <td data-bind="text:schedulerinfo.SchedulerRemote"></td>
+            <td data-bind="text:schedulerinfo.JobStoreType"></td>
+            <td>
+                <input type="button" data-bind="click:shutdownschduler" value="关闭scheudler" />
+                <input type="button" data-bind="click:pausescheduler" value="暂停scheudler" />
+                <input type="button" data-bind="click:resumescheduler" value="重启scheudler" />
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<hr />
+
+<!-- Job列表 -->
+<h1> Job列表</h1>
+<table>
+    <tbody>
+        <tr>
+            <td>任务名称</td>
+            <td>任务所属组名</td>
+            <td>是否持久化</td>
+            <td>任务附加信息</td>
+            <td>任务描述</td>
+            <td>关联的trigger信息</td>
+            <td>操作区</td>
+        </tr>
+        <!-- ko foreach: { data: joblist, as: 'job' } -->
+        <tr>
+            <td data-bind="text:job.Name"></td>
+            <td data-bind="text:job.Group">任务所属组名</td>
+            <td data-bind="text:job.Durable">是否持久化</td>
+            <td data-bind="text:ko.toJSON(job.JobDataMap)">任务附加信息</td>
+            <td data-bind="text:job.Description">任务描述</td>
+            <td data-bind="text:job.TriggerList"></td>
+            <td>
+                <input type="button" value="删除" data-bind="click:$root.removejob" />
+                <input type="button" value="暂停" data-bind="click:$root.pausejob" />
+                <input type="button" value="恢复" data-bind="click:$root.resumejob" />
+            </td>
+        </tr>
+        <!-- /ko -->
+    </tbody>
+</table>
+
+<hr />
+
+<!-- AddJob 的区域 -->
+<table>
+    <tr>
+        <td>执行job类名</td>
+        <td><input type="text" data-bind="value:jobinfo.JobFullClass" /></td>
+    </tr>
+    <tr>
+        <td>job名称</td>
+        <td><input type="text" data-bind="value:jobinfo.JobName" /></td>
+    </tr>
+    <tr>
+        <td>job组名</td>
+        <td><input type="text" data-bind="value:jobinfo.JobGroupName" /></td>
+    </tr>
+    <tr>
+        <td>job描述</td>
+        <td><input type="text" data-bind="value:jobinfo.Description" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="button" data-bind="click:addjob" value="添加job" />
+            <input type="button" data-bind="click:editjob" value="编辑job" />
+        </td>
+    </tr>
+</table>
+
+<hr />
+
+<!-- Trigger列表 -->
+<h1> Trigger列表</h1>
+<table>
+    <tbody>
+        <tr>
+            <td>Trigger全名</td>
+            <td>Trigger关联的Job名</td>
+            <td>Trigger触发表达式</td>
+            <td>执行的Action接口</td>
+            <td>启动时间</td>
+            <td>上次触发时间</td>
+            <td>下次触发时间</td>
+            <td>Trigger状态</td>
+            <td>Trigger优先级</td>
+            <td>描述信息</td>
+            <td>挂载的Calendar</td>
+            <td>操作</td>
+        </tr>
+        <!-- ko foreach: { data: triggerlist, as: 'trigger' } -->
+        <tr>
+            <td data-bind="text:trigger.FullName"></td>
+            <td data-bind="text:trigger.FullJobName"></td>
+            <td data-bind="text:trigger.CronExpressionString"></td>
+            <td data-bind="text:trigger.JobClassName"></td>
+            <td data-bind="text:trigger.StartFireTime"></td>
+            <td data-bind="text:trigger.PrevFireTime"></td>
+            <td data-bind="text:trigger.NextFireTime"></td>
+            <td data-bind="text:trigger.TriggerStatus"></td>
+            <td data-bind="text:trigger.Priority"></td>
+            <td data-bind="text:trigger.Description"></td>
+            <td data-bind="text:trigger.CalendarName"></td>
+            <td>
+                <input type="button" value="暂停" data-bind="click:$root.pausetrigger" />
+                <input type="button" value="恢复" data-bind="click:$root.resumetrigger" />
+                <input type="button" value="删除" data-bind="click:$root.removetrigger" />
+            </td>
+        </tr>
+        <!-- /ko -->
+    </tbody>
+</table>
+
+<hr />
+<!-- AddTrigger 的区域 -->
+<table>
+    <tr>
+        <td>Trigger名称</td>
+        <td><input type="text" data-bind="value:triggerinfo.TriggerName" /></td>
+    </tr>
+    <tr>
+        <td>Trigger组名</td>
+        <td><input type="text" data-bind="value:triggerinfo.TriggerGroupName" /></td>
+    </tr>
+    <tr>
+        <td>Cron表达式</td>
+        <td><input type="text" data-bind="value:triggerinfo.CronExpress" /></td>
+    </tr>
+    <tr>
+        <td>Trigger关联的JobName</td>
+        <td><input type="text" data-bind="value:triggerinfo.ForJobName" /></td>
+    </tr>
+    <tr>
+        <td>Trigger描述</td>
+        <td><input type="text" data-bind="value:triggerinfo.Description" /></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <input type="button" data-bind="click:addtrigger" value="添加trigger" />
+            <input type="button" data-bind="click:edittrigger" value="编辑trigger" />
+        </td>
+    </tr>
+</table>
+
+<hr />
+
+<!-- Calendar列表 -->
+<h1> Calendar列表</h1>
+<table>
+    <tbody>
+        <tr>
+            <td>日历名称</td>
+            <td>被排除的开始时间</td>
+            <td>被排除的结束时间</td>
+            <td>描述</td>
+            <td>操作</td>
+        </tr>
+        <!-- ko foreach: { data: calendarlist, as: 'calendar' } -->
+        <tr>
+            <td data-bind="text:calendar.CalendarName"></td>
+            <td data-bind="text:calendar.RangeStartTime"></td>
+            <td data-bind="text:calendar.RangeEndTime"></td>
+            <td data-bind="text:calendar.Description"></td>
+            <td>
+                <input type="button" value="删除" data-bind="click:$root.removecalendar" />
+            </td>
+        </tr>
+        <!-- /ko -->
+    </tbody>
+</table>
+
+<hr />
+
+<!-- 排除时间段情况区域 -->
+<table>
+    <tr>
+        <td>日历名称</td>
+        <td>
+            <input type="text" data-bind="value:excluderanges.calendarname" />
+        </td>
+    </tr>
+    <tr>
+        <td>日历类型</td>
+        <td>
+            <input type="text" data-bind="value:excluderanges.calendartype" />
+        </td>
+    </tr>
+    <tr>
+        <td>设置的triggerkey</td>
+        <td>
+            <input type="text" data-bind="value:excluderanges.triggerkey" />
+        </td>
+    </tr>
+    <tr>
+        <td>排除值</td>
+        <td>
+            <input type="text" data-bind="value:excluderanges.selectdate" />
+        </td>
+    </tr>
+    <tr>
+        <td>操作</td>
+        <td>
+            <input type="button" value="添加" data-bind="click:addcalendar" />
+            <input type="button" value="修改" data-bind="click:editcalendar" />
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+    var quartzModel = function () {
+
+        self = this;
+
+        this.excluderanges = {
+            calendarname: ko.observable("mycalendarname"),
+            calendartype: ko.observable("DailyCalendar"),
+            triggerkey: ko.observable("datamip.Trigger1"),
+            selectdate: ko.observable("10,20")
+        };
+
+        this.schedulerinfo = {
+            SchedulerInstanceId: ko.observable(""),
+            SchedulerName: ko.observable(""),
+            InStandbyMode: ko.observable(""),
+            ThreadPoolSize: ko.observable(""),
+            Started: ko.observable(""),
+            Shutdown: ko.observable(""),
+            NumberOfJobsExecuted: ko.observable(""),
+            SchedulerRemote: ko.observable(""),
+            JobStoreType: ko.observable("")
+        };
+
+        //获取scheduler元信息
+        this.getschedulermeta = function () {
+            $.post("/quartz/getmeta", function (json) {
+
+                var data = $.parseJSON(json);
+
+                self.schedulerinfo.SchedulerInstanceId(data.SchedulerInstanceId);
+                self.schedulerinfo.SchedulerName(data.SchedulerName);
+                self.schedulerinfo.InStandbyMode(data.InStandbyMode);
+                self.schedulerinfo.ThreadPoolSize(data.ThreadPoolSize);
+                self.schedulerinfo.Started(data.Started);
+                self.schedulerinfo.Shutdown(data.Shutdown);
+                self.schedulerinfo.NumberOfJobsExecuted(data.NumberOfJobsExecuted);
+                self.schedulerinfo.SchedulerRemote(data.SchedulerRemote);
+                self.schedulerinfo.JobStoreType(data.JobStoreType);
+            });
+        };
+
+        //重启scheduler
+        this.resumescheduler = function () {
+            $.post("/quartz/resumescheduler", function (data) {
+                if (data == "1") {
+                    alert("重启成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //暂停scheduler
+        this.pausescheduler = function () {
+            $.post("/quartz/pausescheduler", function (data) {
+                if (data == "1") {
+                    alert("暂停成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //关闭scheduler
+        this.shutdownschduler = function () {
+            $.post("/quartz/shutdownscheduler", function (data) {
+                if (data == "1") {
+                    alert("关闭成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //job的相关信息
+        this.jobinfo = {
+            JobFullClass: ko.observable("IJobLib.HelloJob"),
+            JobName: ko.observable("myhellojob"),
+            JobGroupName: ko.observable("datamip"),
+            Description: ko.observable("这是我创建的第一个job描述")
+        };
+        this.joblist = ko.observableArray([]);
+
+        //trigger的相关信息
+        this.triggerinfo = {
+            TriggerName: ko.observable("Trigger1"),
+            TriggerGroupName: ko.observable("datamip"),
+            ForJobName: ko.observable("datamip.myhellojob"),
+            CronExpress: ko.observable("* * * * * ?"),
+            Description: ko.observable("这是我创建的第一个Trigger描述")
+        };
+        this.triggerlist = ko.observableArray([]);
+
+        //获取所有的job
+        this.getalljob = function () {
+            $.post("/quartz/joblist", function (data) {
+                var json = $.parseJSON(data);
+                self.joblist.removeAll();
+                for (var i = 0; i < json.length; i++) {
+                    self.joblist.push(json[i]);
+                }
+            });
+        };
+
+        //添加job操作
+        this.addjob = function () {
+            var json = ko.toJS(self.jobinfo);
+            $.post("/quartz/addjob", json, function (data) {
+                if (data == "1") {
+                    alert("添加成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //编辑job
+        this.editjob = function () {
+            var json = ko.toJS(self.jobinfo);
+            json.IsEdit = true;
+
+            $.post("/quartz/addjob", json, function (data) {
+                if (data == "1") {
+                    alert("编辑成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //删除job关联的所有trigger 和job本身
+        this.removejob = function (data, e) {
+
+            $.post("/quartz/removejob", {
+                jobName: data.Name,
+                groupName: data.Group
+            }, function (data) {
+                if (data == "1") {
+                    alert("删除成功");
+                    self.joblist.removeAll();
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //暂停job 关联的所有trigger
+        this.pausejob = function (data, e) {
+
+            $.post("/quartz/pausejob", {
+                jobName: data.Name,
+                groupName: data.Group
+            }, function (data) {
+                if (data == "1") {
+                    alert("暂停任务成功");
+                    self.joblist.removeAll();
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //恢复job 关联的所有 trigger
+        this.resumejob = function (data, e) {
+
+            $.post("/quartz/resumejob", {
+                jobName: data.Name,
+                groupName: data.Group
+            }, function (data) {
+                if (data == "1") {
+                    alert("恢复任务成功");
+                    self.joblist.removeAll();
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //获取trigger列表
+        this.gettriggerlist = function () {
+            $.post("/quartz/triggerlist", function (data) {
+                var json = $.parseJSON(data);
+                self.triggerlist.removeAll();
+                for (var i = 0; i < json.length; i++) {
+                    self.triggerlist.push(json[i]);
+                }
+            });
+        };
+
+        //添加trigger
+        this.addtrigger = function () {
+            var json = ko.toJS(self.triggerinfo);
+            $.post("/quartz/addtrigger", json, function (data) {
+                if (data == "1") {
+                    alert("添加成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //暂停trigger
+        this.pausetrigger = function (data, e) {
+            $.post("/quartz/pausetrigger", { name: data.Name, group: data.Group }, function (data) {
+                if (data == "1") {
+                    alert("暂停成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //恢复trigger
+        this.resumetrigger = function (data, e) {
+            $.post("/quartz/resumetrigger", { name: data.Name, group: data.Group }, function (data) {
+                if (data == "1") {
+                    alert("恢复成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //编辑trigger
+        this.edittrigger = function (data, e) {
+            var json = ko.toJS(self.triggerinfo);
+            $.post("/quartz/edittrigger", json, function (data) {
+                if (data == "1") {
+                    alert("编辑成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //删除trigger
+        this.removetrigger = function (data, e) {
+            var json = ko.toJS(self.triggerinfo);
+            $.post("/quartz/removetrigger", { name: data.Name, group: data.Group }, function (data) {
+                if (data == "1") {
+                    alert("删除成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //所有的calendarlist
+        this.calendarlist = ko.observableArray([]);
+
+        //获取所有的calendarlist
+        this.getcalendarlist = function () {
+            $.post("/quartz/calendarlist", function (data) {
+                var json = $.parseJSON(data);
+                self.calendarlist.removeAll();
+                for (var i = 0; i < json.length; i++) {
+                    self.calendarlist.push(json[i]);
+                }
+            });
+        };
+
+        //添加排除指定时间
+        this.addcalendar = function (data, e) {
+            var json = ko.toJS(self.excluderanges);
+            $.post("/quartz/addcalendar", json, function (data) {
+                if (data == "1") {
+                    alert("添加日历成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //编辑排除指定时间
+        this.editcalendar = function (data, e) {
+            var json = ko.toJS(self.excluderanges);
+            $.post("/quartz/editcalendar", json, function (data) {
+                if (data == "1") {
+                    alert("编辑日历成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //删除指定时间
+        this.removecalendar = function (data) {
+            $.post("/quartz/removecalendar", { calendarname: data.CalendarName }, function (data) {
+                if (data == "1") {
+                    alert("删除日历成功");
+                    self.flushall();
+                } else {
+                    alert(data);
+                }
+            });
+        };
+
+        //刷新所有的记录
+        this.flushall = function () {
+            self.gettriggerlist();
+            self.getalljob();
+            self.getschedulermeta();
+            self.getcalendarlist();
+        };
+    };
+
+    var quartz = new quartzModel();
+
+    quartz.flushall();
+
+    ko.applyBindings(quartz);
+
+</script>

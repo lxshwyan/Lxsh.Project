@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Lxsh.Project.WebSocket.Demo</title>
+    <script src="Content/jquery-1.10.2.js"></script>
+    <script src="Content/json2.js"></script>
+</head>
+<body>
+    <div>test</div>
+    <div id="test" style="height:200px;width:600px;position:fixed;left:1px;top:1px;border:1px solid #000000;">
+        <input type="button" value="获取截图" style="width:120px;height:50px;float:left;"   onclick="WS_GetSnapImageBase64();" />
+        <input type="button" value="实时" style="width:120px;height:50px;float:left;" onclick="Test1();" />
+        <input type="button" value="回放" style="width:120px;height:50px;float:left;" onclick="Test2();" />
+        <input type="button" value="分屏" style="width:120px;height:50px;float:left;" onclick="Test3();" />
+        <input type="button" value="重启player" style="width:120px;height:50px;float:left;" onclick="Test4();" />
+        <img style="width:600px;height:200px;float:left;" />
+    </div>
+    <script type="text/javascript">
+        var WS_Client;
+        var WS_CB_WS_GetSnapImageBase64;
+        $(function () {
+            WS_InitClient();
+        })
+        function WS_InitClient() {
+            WS_Client = new WebSocket("ws://127.0.0.1:8893/LxshProject")
+           
+            WS_Client.onmessage = function (e) {
+                var json = JSON.parse(e.data);
+                alert(json.JsonString);
+            }
+            WS_Client.onopen = function () {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+              //  WS_Client.send("发送数据");
+                 alert("数据发送中...");
+            };
+        }
+        function WS_GetSendWrapperString(name, obj) {
+            var wrapper = { "Name": name, "Success": true, "JsonString": JSON.stringify(obj) };
+            return JSON.stringify(wrapper)
+        }
+        function WS_GetSnapImageBase64() {
+         //   Console.log("ddddd");
+          //  WS_CB_WS_GetSnapImageBase64 = callback;
+           // var sendString = WS_GetSendWrapperString("GetSnapImageBase64", "");
+           //  alert(sendString);
+           // WS_Client.send(sendString);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+﻿@{
+    Layout = null; }
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>LxshShare云服务平台SSO认证中心</title>
+    <link href="../style/login/login.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="login_box">
+        <div class="login_l_img"><img src="../images/login/login-img.png" /></div>
+        <div class="login">
+            <div class="login_logo"><a href="#"><img src="../images/login/login_logo.png" /></a></div>
+            <div class="login_name">
+                <p>LxshShare云服务平台SSO认证中心</p>
+            </div>
+            <input name="userName" id="userName" type="text" value="用户名" onfocus="this.value=''" onblur="if(this.value==''){this.value='用户名'}" tabindex="1">
+            <span id="password_text" onclick="this.style.display='none';document.getElementById('password').style.display='block';document.getElementById('password').focus().select();" tabindex="2">密码</span>
+            <input name="password" type="password" id="password" style="display:none;" onblur="if(this.value==''){document.getElementById('password_text').style.display='block';this.style.display='none'};" />
+            <input value="登录" id="btnSubmit" style="width:100%;" type="submit" tabindex="3">
+        </div>
+        <div class="copyright">LxshShare有限公司 版权所有©2016-2018 技术支持电话：000-00000000</div>
+    </div>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/layer/layer.js"></script>
+    <script type="text/javascript">
+        var rootUrl = '@Url.Content("~/")';
+       //立即执行函数 打开页面输入框获取焦点
+       (function wp_attempt_focus() {
+                setTimeout(function () {
+                    try {
+                        d = $("#userName");
+                        d.focus();
+                        d.select();
+                    } catch (e) { }
+                }, 200);
+        })();
+        //初始化函数
+        $(function () {
+            //增加键盘事件
+            $(document).keydown(function (event) {
+                if (event.keyCode == 13)
+                {
+                   event.returnValue = false;
+                   event.cancel = true;
+                   $("#btnSubmit").click();
+                }
+           });
+           //登录中心自己的登录
+           $("#btnSubmit").click(function () {
+                 $.ajax({                    type: "Post",                    url: "@Url.Action("Login", "Account")",                    data: {                        username: $('#userName').val(),                        password: $('#password').val(),                        returnUrl: "@ViewBag.ReturnUrl"                    },                    dataType: "json",                    success: function (data) {                        console.log(data);                        if (data.IsSucceed) {                            //重定向回原页面                            //添加Ticket参数                            var returnUrl = addParamToUrl(data.ReturnUrl, "UserAuthTicket", data.Ticket);                            //添加UserName参数                            returnUrl = addParamToUrl(returnUrl, "UserName", data.UserInfo);                            console.log(returnUrl);                            document.location = returnUrl;                        }                        else {                            alert(data.ErrorMsg);                        }                    }                })
+
+           });
+        })
+
+          //向Url中加参数
+        function addParamToUrl(url, paramName, paramValue) {
+            var num = url.indexOf("?");
+            //目前无参数则直接在后面加参数
+            if (num == -1) {
+                url = url + "?" + paramName + "=" + paramValue;
+            }
+            else {
+                var arr = url.split("?");
+                //后面无参数则直接加参数
+                if (arr[1] == "" || arr[1] == undefined || arr[1] == null) {
+                    url = url + paramName + "=" + paramValue;
+                }
+                //有参数要加参数分隔符
+                else {
+                    //获取所有参数
+                    var params = arr[1].split("&");
+                    //只有一个参数直接在后面加
+                    if (params.length == 1) {
+                        url = url + "&" + paramName + "=" + paramValue;
+                    }
+                    //有多个参数
+                    else {
+                        //最后一个参数不存在
+                        var lastparam = params[params.length - 1];
+                        if (lastparam == null || lastparam == "" || lastparam == undefined) {
+                            url = url + paramName + "=" + paramValue;
+                        }
+                        else {
+                            url = url + "&" + paramName + "=" + paramValue;
+                        }
+                    }
+                }
+            }
+            return url;
+        }
+
+
+
+        //登录中心跨域设置分站的Cookie
+        function setCookie(url, param) {
+            $.ajax({
+                type: "get",
+                async: false,
+                url: url,
+                dataType: "jsonp",
+                crossDomain: true,
+                jsonp: "callback",
+                jsonpCallback: "flightHandler",
+                data:param,
+                success: function (data) {
+                },
+                error: function () {
+                    alert('调用失败');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

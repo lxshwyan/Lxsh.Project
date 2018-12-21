@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quartz.2010", "..\Quartz.NET-2.5\src\Quartz\Quartz.2010.csproj", "{AEF8823B-E45B-4B35-A4D0-C08C1196D017}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{AEDBCFBD-AC0B-4B4E-A423-E9953C8FFF48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IJobLib", "IJobLib\IJobLib.csproj", "{62B8B974-2F64-4187-B6A8-0A4043FA5362}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEF8823B-E45B-4B35-A4D0-C08C1196D017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEF8823B-E45B-4B35-A4D0-C08C1196D017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEF8823B-E45B-4B35-A4D0-C08C1196D017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEF8823B-E45B-4B35-A4D0-C08C1196D017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEDBCFBD-AC0B-4B4E-A423-E9953C8FFF48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDBCFBD-AC0B-4B4E-A423-E9953C8FFF48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDBCFBD-AC0B-4B4E-A423-E9953C8FFF48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDBCFBD-AC0B-4B4E-A423-E9953C8FFF48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62B8B974-2F64-4187-B6A8-0A4043FA5362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B8B974-2F64-4187-B6A8-0A4043FA5362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B8B974-2F64-4187-B6A8-0A4043FA5362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B8B974-2F64-4187-B6A8-0A4043FA5362}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
