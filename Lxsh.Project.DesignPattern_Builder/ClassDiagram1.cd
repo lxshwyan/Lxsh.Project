@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Lxsh.Project.DesignPattern_Builder.Program" Collapsed="true">
+    <Position X="0.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lxsh.Project.DesignPattern_Builder.AbstractPerson">
+    <Position X="4.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACgAAAACAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>AbstractPerson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lxsh.Project.DesignPattern_Builder.FatPerson">
+    <Position X="3.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACgAAAACAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>FatPerson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lxsh.Project.DesignPattern_Builder.ThinPerson">
+    <Position X="6.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACgAAAACAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>ThinPerson.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lxsh.Project.DesignPattern_Builder.BuildlerDirector">
+    <Position X="2.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAACAAAA=</HashCode>
+      <FileName>BuildlerDirector.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>
