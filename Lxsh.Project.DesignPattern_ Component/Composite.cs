@@ -13,8 +13,7 @@ namespace Lxsh.Project.DesignPattern__Component
         public override void Add(AbstractComponent c)
         {
             this.children.Add(c);
-        }
-
+        }    
         public override void Display(int depth)
         {
             Console.WriteLine(new string('-', depth) + name);
