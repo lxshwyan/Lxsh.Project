@@ -20,10 +20,18 @@ using System.Threading.Tasks;
 
 namespace Lxsh.Project.WcfServiceLib
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract =(typeof(ILxshCallBack)))]
     public interface IEventAlarm
     {
         [OperationContract]
-        void DoWork();
+        void Login(string username);
+    }
+    public interface ILxshCallBack
+    {
+        [OperationContract]
+        void Notify1(string msg);
+
+        [OperationContract]
+        void Notify2(string msg);
     }
 }

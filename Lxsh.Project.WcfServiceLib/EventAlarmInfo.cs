@@ -14,16 +14,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Lxsh.Project.WcfServiceLib
 {
+   
     public class EventAlarmInfo : IEventAlarm
     {
-        public void DoWork()
+        public static Dictionary<string, ILxshCallBack> channelDic = new Dictionary<string, ILxshCallBack>();
+        public void Login(string username)
         {
-            Console.WriteLine("EventAlarmInfo----DoWork");
+            //获取当前client的对象 channel
+            var callback = OperationContext.Current.GetCallbackChannel<ILxshCallBack>();
+            
+            channelDic[username] = callback;
+            Console.WriteLine("当前username={0} 已登录", username);
+        }
+        public static void Modify()
+        {
+            while (true)
+            {
+                var input = Console.ReadLine();
+
+                if (!string.IsNullOrEmpty(input))
+                {
+                    foreach (var item in channelDic)
+                    {
+                        item.Value.Notify1(input);
+                        item.Value.Notify2(input);
+                    }
+                }
+            }
         }
     }
 }

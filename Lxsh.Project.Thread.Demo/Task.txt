@@ -1,0 +1,102 @@
+﻿一：Task   .net 4.0 
+
+为什么要有Task。
+
+Task => Thread + ThreadPool + 优化和功能扩展
+
+Thread：        容易造成时间 + 空间开销，而且使用不当，容易造成线程过多，导致时间片切换。。。
+
+ThreadPool：    控制能力比较弱。 做thread的延续，阻塞，取消，超时等等功能。。。。
+
+                控制权在CLR，而不是在我们这里。。。
+
+
+Task 看起来像是一个Thread。。。
+
+Task 是在ThreadPool的基础上进行的封装。。。。
+
+
+.net 4.0之后，微软是极力的推荐 Task。。。来作为异步计算。。。
+
+
+二：Task启动的几种方式
+
+1. 实例化的方式启动Task
+
+            Task task = new Task(() =>
+            {
+                Console.WriteLine("我是工作线程： tid={0}", Thread.CurrentThread.ManagedThreadId);
+            });
+
+            task.Start();
+
+            Console.Read();
+
+2. TaskFactory的方式启动Task
+
+   //使用TaskFactory启动
+            var task = Task.Factory.StartNew(() =>
+            {
+                Console.WriteLine("我是工作线程： tid={0}", Thread.CurrentThread.ManagedThreadId);
+            });
+
+3. Task.Run 方法
+
+    //使用Task的Run方法
+            var task = Task.Run(() =>
+            {
+                Console.WriteLine("我是工作线程： tid={0}", Thread.CurrentThread.ManagedThreadId);
+            });
+
+4. Task的同步方法
+
+            //这个是同步执行。。。。也就是阻塞执行。。。
+            var task = new Task(() =>
+            {
+                Console.WriteLine("我是工作线程： tid={0}", Thread.CurrentThread.ManagedThreadId);
+            });
+
+            task.RunSynchronously();
+
+
+三：Task是建立在ThreadPool上面吗？？？
+
+
+我们的Task底层都是由不同的TaskScheduler支撑的。。。
+
+TaskScheduler 相当于Task的CPU处理器。。。
+
+默认的TaskScheduler是ThreadPoolTaskScheduler。。。
+
+wpf中的TaskScheduler是 SynchronizationContextTaskScheduler
+
+
+ThreadPoolTaskScheduler
+
+this.m_taskScheduler.InternalQueueTask(this);
+
+大家也可以自定义一些TaskScheduler。。。。
+
+
+		protected internal override void QueueTask(Task task)
+		{
+			if ((task.Options & TaskCreationOptions.LongRunning) != TaskCreationOptions.None)
+			{
+				new Thread(ThreadPoolTaskScheduler.s_longRunningThreadWork)
+				{
+					IsBackground = true
+				}.Start(task);
+				return;
+			}
+			bool forceGlobal = (task.Options & TaskCreationOptions.PreferFairness) > TaskCreationOptions.None;
+			ThreadPool.UnsafeQueueCustomWorkItem(task, forceGlobal);
+		}
+
+四：Task<TResult>
+
+让Task具有返回值。。。 它的父类其实就是Task。。
+
+具体的启动方式和Task是一样的。。。
+
+
+

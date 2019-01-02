@@ -1,0 +1,144 @@
+﻿
+一：thread中一些静态方法  【内存栅栏】
+
+1. MemoryBarrier
+
+2. VolatileRead/Write
+
+
+这些方法到底有什么用处。。。。
+
+在实际项目中，我们都喜欢用Release版本，而不是Debug。。。。
+
+因为Release中做了一些代码和缓存的优化。。。 比如说将一些数据从memory中读取到cpu高速缓存中。
+
+
+二：release和debug到底性能差异有多大。。。
+
+冒泡排序 O(N)2   1w * 1w = 1亿
+
+从结果中可以看到，大概有5倍的差距。。。
+
+
+在任何时候，不见得release都是好的。。有可能会给你引入一些bug。。。
+
+  class Program
+    {
+        static void Main(string[] args)
+        {
+            var path = Environment.CurrentDirectory + "//1.txt";
+
+            var list = System.IO.File.ReadAllLines(path).Select(i => Convert.ToInt32(i)).ToList();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var watch = Stopwatch.StartNew();
+
+                var mylist = BubbleSort(list);
+
+                watch.Stop();
+
+                Console.WriteLine(watch.Elapsed);
+            }
+
+            Console.Read();
+        }
+
+        //冒泡排序算法
+        static List<int> BubbleSort(List<int> list)
+        {
+            int temp;
+            //第一层循环： 表明要比较的次数，比如list.count个数，肯定要比较count-1次
+            for (int i = 0; i < list.Count - 1; i++)
+            {
+                //list.count-1：取数据最后一个数下标，
+                //j>i: 从后往前的的下标一定大于从前往后的下标，否则就超越了。
+                for (int j = list.Count - 1; j > i; j--)
+                {
+                    //如果前面一个数大于后面一个数则交换
+                    if (list[j - 1] > list[j])
+                    {
+                        temp = list[j - 1];
+                        list[j - 1] = list[j];
+                        list[j] = temp;
+                    }
+                }
+            }
+            return list;
+        }
+    }
+
+
+        static void Main(string[] args)
+        {
+            var isStop = false;
+
+            var t = new Thread(() =>
+            {
+                var isSuccess = false;
+
+                while (!isStop)
+                {
+                    isSuccess = !isSuccess;
+                }
+            });
+
+            t.Start();
+
+            Thread.Sleep(1000);
+            isStop = true;
+            t.Join();
+
+            Console.WriteLine("主线程执行结束！");
+            Console.ReadLine();
+        }
+
+
+上面这段代码在release环境下出现问题了。。。主线程不能执行结束。。。。
+
+
+从代码中可以发现，有两个线程在共同一个isStop变量。。。
+
+就是t这个线程会将isStop加载到Cpu Cache中。。。 【release大胆的优化】
+
+
+两种方法解决：
+
+1. 不要让多个线程去操作 一个共享变量，否则容易出问题。。。。
+
+2. 如果一定要这么做，那就需要使用本节课所讲到的内容。。。
+   
+   MemoryBarrier
+   VolatileRead/Write
+
+   不要进行缓存，每次读取数据都是从memrory中读取数据。。。
+
+MemoryBarrier => 在此方法之前的内存写入都要及时从cpu cache中更新到 memory。。。
+
+                 在此方法之后的内存读取都要从memory中读取，而不是cpu cache。。。
+
+
+        static void Main(string[] args)
+        {
+            var isStop = 0;
+
+            var t = new Thread(() =>
+            {
+                var isSuccess = false;
+
+                while (isStop == 0)
+                {
+                    Thread.VolatileRead(ref isStop);
+                    isSuccess = !isSuccess;
+                }
+            });
+
+            t.Start();
+
+            Thread.Sleep(1000);
+            isStop = 1;
+            t.Join();
+
+            Console.WriteLine("主线程执行结束！");
+            Console.ReadLine();
+        }

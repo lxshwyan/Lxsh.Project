@@ -34,7 +34,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(722, 279);
+            this.ClientSize = new System.Drawing.Size(722, 361);
             this.Name = "Form1";
             this.Text = "Lxsh.Project演示项目";
             this.ResumeLayout(false);
