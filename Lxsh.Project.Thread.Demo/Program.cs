@@ -1,4 +1,5 @@
 ﻿using System;                                       //
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -19,6 +20,13 @@ namespace Lxsh.Project.Thread.Demo
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());  
+            #region Flags
+            //Permission permission = Permission.create | Permission.read | Permission.update | Permission.delete;
+            //Console.WriteLine("1、枚举创建，并赋值……");
+            //Console.WriteLine(permission.ToString());
+            //Console.WriteLine((int)permission);
+            #endregion
+
             #region Thread  ThreadPool  Task  
             //System.Threading.Thread thread = new System.Threading.Thread(()=> {  
             //    for (int i = 0; i < 2; i++)
@@ -126,21 +134,132 @@ namespace Lxsh.Project.Thread.Demo
             #endregion
 
             #region Task Enum    AttachedToParent   
-            //1.AttachedToParent  ：指定将任务附加到任务层次结构中的某个父级     
-            //建立了父子关系。。。  父任务想要继续执行，必须等待子任务执行完毕。。。。
-            Task task = new Task(() =>{
-                Task task1 = new Task(() => { System.Threading.Thread.Sleep(1000); Console.WriteLine("task1线程执行完成"); }, TaskCreationOptions.AttachedToParent);
-                Task task2 = new Task(() => { System.Threading.Thread.Sleep(1000); Console.WriteLine("task2线程执行完成"); }, TaskCreationOptions.AttachedToParent);
-                task1.Start();
-                task2.Start();   
-            });
-           // TaskCreationOptions.DenyChildAttach   阻止子task附加
-            task.Start();
-            task.Wait();
-            Console.WriteLine("主线程执行完成");
+            // //1.AttachedToParent  ：指定将任务附加到任务层次结构中的某个父级     
+            // //建立了父子关系。。。  父任务想要继续执行，必须等待子任务执行完毕。。。。
+            // Task task = new Task(() =>{
+            //     Task task1 = new Task(() => { System.Threading.Thread.Sleep(1000); Console.WriteLine("task1线程执行完成"); }, TaskCreationOptions.AttachedToParent);
+            //     Task task2 = new Task(() => { System.Threading.Thread.Sleep(1000); Console.WriteLine("task2线程执行完成"); }, TaskCreationOptions.AttachedToParent);
+            //     task1.Start();
+            //     task2.Start();   
+            // });
+            //// TaskCreationOptions.DenyChildAttach   阻止子task附加
+            // task.Start();
+            // task.Wait();
+            // Console.WriteLine("主线程执行完成");
             #endregion
 
+            #region   TaskContinuationOptions.LazyCancellation 任务的延续
+            // CancellationTokenSource source = new CancellationTokenSource();
 
+            //// source.Cancel();
+            // Task task1 = new Task(() => {
+            //     Console.WriteLine("我是工作线程:{0}, dataTime={1}", System.Threading.Thread.CurrentThread.ManagedThreadId, DateTime.Now.ToString());
+            // });
+            // var task2= task1.ContinueWith(t => {
+            //     Console.WriteLine("我是工作线程:{0}, dataTime={1}", System.Threading.Thread.CurrentThread.ManagedThreadId, DateTime.Now.ToString());
+            // },source.Token, TaskContinuationOptions.LazyCancellation, TaskScheduler.Current);
+            #endregion
+
+            #region   CancellationTokenSource 任务取消
+            //CancellationTokenSource source1 = new CancellationTokenSource();
+            //CancellationTokenSource source2 = new CancellationTokenSource();
+            //CancellationTokenSource source3 = CancellationTokenSource.CreateLinkedTokenSource(source1.Token, source2.Token);  //1和2只要有一个取消 他就取消
+
+            //CancellationTokenSource source = new CancellationTokenSource(10000);   //一种方式定时取消 10s后取消
+            //source.Token.Register(() =>
+            //{         
+            //    Console.WriteLine("当前线程正被取消");
+            //});
+            //var canceltask = new Task(() =>
+            //{
+            //    while (!source.IsCancellationRequested)
+            //    {
+            //        System.Threading.Thread.Sleep(1000);
+            //        Console.WriteLine("我是工作线程:{0}, dataTime={1}", System.Threading.Thread.CurrentThread.ManagedThreadId, DateTime.Now.ToString());
+            //    } 
+            //}, source.Token);
+            //canceltask.Start();
+            //    source.CancelAfter(10000);//第一种方式定时取消10s后取消
+            #endregion
+
+            #region Task 返回值
+            //Task<int> task = Task.Factory.StartNew(() => { 
+            //    return 1;
+            //});
+            //var task2 = task.ContinueWith(t =>
+            //{
+            //    return t.Result + 2;
+            //});
+            //Console.WriteLine(task2.Result); 
+
+            // WhenAll返回值
+
+            //Task<int> task1 = Task.Factory.StartNew(() =>
+            //{
+            //    return 1;
+            //});
+            //Task<int> task2= Task.Factory.StartNew(() =>
+            //{
+            //    return 1;
+            //});
+            //Task < int[]> task3 = Task.WhenAll<int>(task1, task2);
+            //int[] count = task3.Result;
+
+            #endregion
+
+            #region 异常信息    
+            //Task task = new Task(() =>
+            //{
+            //    Task task1 = new Task(() => { throw new Exception("我是 childTask1 异常"); }, TaskCreationOptions.AttachedToParent);
+            //    Task task2 = new Task(() => { throw new Exception("我是 childTask2 异常"); }, TaskCreationOptions.AttachedToParent);
+            //    task1.Start();
+            //    task2.Start();
+            //});
+            //try
+            //{
+            //    task.Start();
+            //    task.Wait();
+            //}
+            ////catch (Exception ex)
+            ////{
+            ////    Console.WriteLine(ex.Message);
+            ////}
+            //catch (AggregateException ex)
+            //{
+            //    //foreach (var item in ex.InnerExceptions)
+            //    //{
+            //    //    Console.WriteLine(item.Message+"  "+item.GetType().Name +"   "+item.InnerException.Message);
+            //    //}    
+            //    ex.Handle(x =>
+            //    {
+            //        if (x.InnerException.Message == "我是 childTask1 异常")
+            //        {
+            //            return true;      //  我是 childTask1 异常" 这个异常不抛上层
+            //       }
+            //       //if (x.InnerException.Message == "我是 childTask2 异常")
+            //       //{
+            //       //    return true;
+            //       //}
+            //       return false;
+            //    });    
+            //}
+            #endregion
+
+            #region Parallel
+            ConcurrentStack<int> stack = new ConcurrentStack<int>();  //线程安全集合
+            Parallel.For(1, 10, (m,loop) => {
+                if (m == 5)
+                {
+                    loop.Break();   //打到第五部退出
+                    // return;
+                }
+                System.Threading.Thread.Sleep(1000);
+               
+                Console.WriteLine(m); ;
+            });
+          //List<int> vs=  Enumerable.Range(1, 10).ToList();
+            Console.WriteLine("已完成");
+            #endregion
 
             Console.Read();
 

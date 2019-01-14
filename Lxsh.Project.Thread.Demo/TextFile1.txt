@@ -1,0 +1,152 @@
+﻿一：CPU过高的问题
+
+1.现象： 门票的首页之后，页面一直在loading中。。。。
+         
+         查下来是在一个while循环中做了一个 << >>操作，到时候while条件一直都是true。。。
+
+         定义为“一级事件” => 上报董事会
+
+                 二级事件   => 事业部CEO
+
+while(true)
+{
+  i=i<<2。。。
+  
+  if(ddddd){
+  }
+}
+
+如果用windbg去找到。。。  去调试dump文件
+
+
+演示步骤：
+
+<1> 生成release x64
+
+<2> 在“任务管理器”中生成一个dump文件 
+
+<3> 需要用x64 的windbg。。。
+
+<4> !runaway  查看当前托管线程已执行时间
+
+  Thread       Time
+   9:5ca8      0 days 0:00:37.796
+   0:2a68      0 days 0:00:00.015
+   8:5600      0 days 0:00:00.000
+   7:46fc      0 days 0:00:00.000
+   6:33d4      0 days 0:00:00.000
+   5:3498      0 days 0:00:00.000
+   4:5644      0 days 0:00:00.000
+   3:398       0 days 0:00:00.000
+   2:2a60      0 days 0:00:00.000
+   1:63c0      0 days 0:00:00.000
+
+<5> 切换到指定的线程    ~~[5ca8]s
+
+<6> 查看当前线程的调用堆栈  !clrstack
+
+000000f4d63ff2a8 00007ff8d50405f7 *** WARNING: Unable to verify checksum for ConsoleApplication51.exe
+ConsoleApplication51.Program+c.b__1_0() [c:\users\hxc\documents\visual studio 2015\Projects\ConsoleApplication51\ConsoleApplication51\Program.cs @ 22]
+000000f4d63ff2b0 00007ff932b10937 System.Threading.Tasks.Task.Execute()
+000000f4d63ff2f0 00007ff932ac674e System.Threading.ExecutionContext.RunInternal(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+000000f4d63ff3c0 00007ff932ac65e7 System.Threading.ExecutionContext.Run(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+000000f4d63ff3f0 00007ff932b10bdd System.Threading.Tasks.Task.ExecuteWithThreadLocal(System.Threading.Tasks.Task ByRef)
+000000f4d63ff4a0 00007ff932b10303 System.Threading.Tasks.Task.ExecuteEntry(Boolean)
+000000f4d63ff4e0 00007ff932acfa10 System.Threading.ThreadPoolWorkQueue.Dispatch()
+000000f4d63ff978 00007ff934626a53 [DebuggerU2MCatchHandlerFrame: 000000f4d63ff978] 
+
+从调用堆栈上来看，当前线程 在  Program+c.b__1_0() 方法之后就没有调用堆栈了，说明方法在这个地方
+停滞不前了。
+
+<7> 最后到指定的b__1_0方法去寻找一下是否有异常。。。
+
+<8> 通过windbg自己生成dll   【!help】
+
+    !dumpdomain
+    !savemodule 00007ff8d4f350f0 c:\2\1.dll
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Run();
+
+            Console.Read();
+        }
+
+        static void Run()
+        {
+            var task = Task.Factory.StartNew(() =>
+            {
+                var i = true;
+                //这个地方是一个非常复杂的逻辑。导致死循环
+                while (true)
+                {
+                    i = !i;
+                }
+            });
+        }
+    }
+
+
+二：死锁问题
+
+
+=> 乱用lock语句，或者“锁机制”  [这是一种情况]
+
+1.  ~*e!clrstack  查看所有线程的堆栈
+2.  !threads      查看当前的托管线程
+3.  !syncblk     当前哪一个线程持有锁
+
+0:007> !syncblk
+Index SyncBlock MonitorHeld Recursion Owning Thread Info  SyncBlock Owner
+    7 0000020bf7522eb8            3         1 0000020bf74c7910 4e04   0   0000020b80007808 ConsoleApplication51.Program
+
+可以看得出“主线程”持有当前的同步锁
+
+说先通过syncblk找到了持有锁的线程，那么肯定有其他的线程在执行Monitor.Enter的时候
+
+进行不下去。。。也就是调用堆栈顶部到这个地方为止。。。。
+
+
+0000005cf5ffea98 00007ff949476c24 [GCFrame: 0000005cf5ffea98] 
+0000005cf5ffebd8 00007ff949476c24 [GCFrame: 0000005cf5ffebd8] 
+0000005cf5ffec18 00007ff949476c24 [HelperMethodFrame_1OBJ: 0000005cf5ffec18] System.Threading.Monitor.Enter(System.Object)
+0000005cf5ffed10 00007ff8d5030658 ConsoleApplication51.Program.Run2() [c:\users\hxc\documents\visual studio 2015\Projects\ConsoleApplication51\ConsoleApplication51\Program.cs @ 55]
+0000005cf5ffed50 00007ff8d50305ec ConsoleApplication51.Program.b__1_0() [c:\users\hxc\documents\visual studio 2015\Projects\ConsoleApplication51\ConsoleApplication51\Program.cs @ 44]
+0000005cf5ffed80 00007ff932b10937 System.Threading.Tasks.Task.Execute()
+0000005cf5ffedc0 00007ff932ac674e System.Threading.ExecutionContext.RunInternal(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+0000005cf5ffee90 00007ff932ac65e7 System.Threading.ExecutionContext.Run(System.Threading.ExecutionContext, System.Threading.ContextCallback, System.Object, Boolean)
+0000005cf5ffeec0 00007ff932b10bdd System.Threading.Tasks.Task.ExecuteWithThreadLocal(System.Threading.Tasks.Task ByRef)
+0000005cf5ffef70 00007ff932b10303 System.Threading.Tasks.Task.ExecuteEntry(Boolean)
+0000005cf5ffefb0 00007ff932acfa10 System.Threading.ThreadPoolWorkQueue.Dispatch()
+0000005cf5fff448 00007ff934626a53 [DebuggerU2MCatchHandlerFrame: 0000005cf5fff448] 
+
+
+
+三：内存爆满
+
+1.!dumpheap -stat 查看clr的托管堆中的各个类型的占用情况
+
+00007ff932cc2aa8       19         1296 System.String[]
+00007ff932cc3698       58         3248 System.RuntimeType
+00007ff932cc16b8      186         9218 System.String
+000001358b1503d0       57        12824      Free
+00007ff932cc1d30        6        35216 System.Object[]
+00007ff932cc5dc0    13762       660576 System.Text.StringBuilder
+00007ff932cc2860    13775    220334298 System.Char[]
+
+然后看到了有13775个char[]数组
+
+!DumpHeap /d -mt 00007ff932cc2860  //查看当前的方法表
+
+!DumpObj /d 00000135978d5340       //查看当前char[]的内容
+
+!gcroot 00000135a60f4940           //查看当前地址的Root。。。
+
+所以结合“StringBuilder”，结合 ”hello world“ 我们就找出了问题。。。
+
+
+
+总结： 救火的问题。。。。给公司挽回损失。。。。    【.net高级调试】
+

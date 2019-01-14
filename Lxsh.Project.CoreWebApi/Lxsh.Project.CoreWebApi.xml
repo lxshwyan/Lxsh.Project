@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lxsh.Project.CoreWebApi</name>
+    </assembly>
+    <members>
+        <member name="T:Lxsh.Project.CoreWebApi.Swagger.CustomApiVersion">
+            <summary>
+            自定义版本
+            </summary>
+        </member>
+        <member name="T:Lxsh.Project.CoreWebApi.Swagger.CustomApiVersion.ApiVersions">
+            <summary>
+            Api接口版本 自定义
+            </summary>
+        </member>
+        <member name="F:Lxsh.Project.CoreWebApi.Swagger.CustomApiVersion.ApiVersions.v1">
+            <summary>
+            v1 版本
+            </summary>
+        </member>
+        <member name="F:Lxsh.Project.CoreWebApi.Swagger.CustomApiVersion.ApiVersions.v2">
+            <summary>
+            v2 版本
+            </summary>
+        </member>
+    </members>
+</doc>

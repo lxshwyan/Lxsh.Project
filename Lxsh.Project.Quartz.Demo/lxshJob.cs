@@ -33,13 +33,13 @@ namespace Lxsh.Project.Quartz.Demo
         public void Execute(IJobExecutionContext context)
         {
             // [PersistJobDataAfterExecution]   加了这个特性， 才能对  JobDetail里面键值队赋值 （因为默认是无状态的，每次执行的是重新初始化JobDetail对象）
-          
+
             //string str = context.JobDetail.JobDataMap["userName"].ToString();
             //Console.WriteLine(DateTime.Now.ToString()+ str);
             //context.JobDetail.JobDataMap["userName"] = str + 1;
             //System.Threading.Thread.Sleep(5000);  //测试验证 DisallowConcurrentExecution
 
-
+            Console.WriteLine("开始执行");
             var info = string.Format("{4} index={0},current={1}, scheuler={2},nexttime={3}",
                                            index++, DateTime.Now,
                                            context.ScheduledFireTimeUtc?.LocalDateTime,

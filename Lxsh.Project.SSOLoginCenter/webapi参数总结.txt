@@ -1,0 +1,52 @@
+﻿在WebAPI中，请求主体(HttpContent)只能被读取一次，不被缓存，只能向前读取的流。
+
+举例子说明：
+
+1. 请求地址：/?id=123&name=bob 
+
+    服务端方法： void Action(int id, string name) // 所有参数都是简单类型，因而都将来自url
+
+2. 请求地址：/?id=123&name=bob 
+
+    服务端方法： void Action([FromUri] int id, [FromUri] string name) // 同上
+
+                      void Action([FromBody] string name); //[FormBody]特性显示标明读取整个body为一个字符串作为参数
+
+3. 请求地址： /?id=123 
+
+    类定义：
+
+public class Customer {   // 定义的一个复杂对象类型 
+  public string Name { get; set; } 
+  public int Age { get; set; } 
+}
+
+    服务端方法： void Action(int id, Customer c) // 参数id从query string中读取，参数c是一个复杂Customer对象类戏，通过formatter从body中读取
+
+    服务端方法： void Action(Customer c1, Customer c2) // 出错！多个参数都是复杂类型，都试图从body中读取，而body只能被读取一次
+
+    服务端方法： void Action([FromUri] Customer c1, Customer c2) // 可以！不同于上面的action，复杂类型c1将从url中读取，c2将从body中读取
+
+4.ModelBinder方式：
+
+void Action([ModelBinder(MyCustomBinder)] SomeType c) // 标示使用特定的model binder来解析参数
+
+[ModelBinder(MyCustomBinder)] public class SomeType { } // 通过给特定类型SomeType声明标注[ModelBidner(MyCustomBinder)]特性使得所有SomeType类型参数应用此规则 
+
+void Action(SomeType c) // 由于c的类型为SomeType，因而应用SomeType上的特性决定其采用model binding
+
+ 
+
+总结：
+
+1. 默认简单参数都通过URL参数方式传递，例外：
+
+1.1 如果路由中包含了Id参数，则id参数通过路由方式传递；
+
+1.2 如果参数被标记为[FromBody]，则可以该参数可以为简单参数，客户端通过POST方式传递：$.ajax(url, '=value')，或者$.ajax({url: url, data: {'': 'value'}});
+
+2. 默认复杂参数(自定义实体类)都通过POST方式传递，例外：
+
+2.1 如果参数值被标记为[FromUri]， 则该参数可以为复杂参数；
+
+3. 被标记为[FromBody]的参数只允许出现一次， 被标记为[FromUri]的参数可以出现多次，如果被标记为[FromUri]的参数是简单参数，该标记可以去掉。

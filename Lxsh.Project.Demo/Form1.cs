@@ -5,9 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,20 +21,20 @@ namespace Lxsh.Project.Demo
         public Form1()
         {
             InitializeComponent();
-            ts = new TimeCost("test");
+        //    ts = new TimeCost("test");
           
-        var client = new MongoClient("mongodb://127.0.0.1:27017");
-            var mydb = client.GetDatabase("lxshProject");
-            var mycollention = mydb.GetCollection<Test>("person");
-            //新增数据
-            //mycollention.InsertOne(new Test()
-            //{
-            //    Name = "lxsh",
-            //    _id = 13131
-            //});
-            //获取数据
-            ExpressionFilterDefinition<Test> expression = new ExpressionFilterDefinition<Test>(i => i.Name == "lxsh");
-            List<Test> tests=   mycollention.Find<Test>(expression).ToList();
+        //var client = new MongoClient("mongodb://127.0.0.1:27017");
+        //    var mydb = client.GetDatabase("lxshProject");
+        //    var mycollention = mydb.GetCollection<Test>("person");
+        //    //新增数据
+        //    //mycollention.InsertOne(new Test()
+        //    //{
+        //    //    Name = "lxsh",
+        //    //    _id = 13131
+        //    //});
+        //    //获取数据
+        //    ExpressionFilterDefinition<Test> expression = new ExpressionFilterDefinition<Test>(i => i.Name == "lxsh");
+        //    List<Test> tests=   mycollention.Find<Test>(expression).ToList();
         }
         public class Test
         {
@@ -40,6 +42,70 @@ namespace Lxsh.Project.Demo
 
             public string Name { get; set; }
         }
-      
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            string  T=  GetPid(7819);
+            foreach (System.Diagnostics.Process item in System.Diagnostics.Process.GetProcesses())
+            {
+                if (item.Id.ToString() == GetPid(7819))
+                {
+                    item.Kill();
+                }
+               
+            }
+          //  MessageBox.Show(T);
+        }
+        public async Task<int> GetVAsync(int t)
+        {
+            Console.WriteLine("调用开始");
+            await Task.Run(() => { System.Threading.Thread.Sleep(2000); return t; });
+            Console.WriteLine("调用完成");
+
+            return 1;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {    
+            Console.WriteLine("主线程调用完成");
+        }
+        public string GetPid(int nPort)
+        {
+            string pid = "-1";
+            Process pro = new Process();
+            List<int> ports = new List<int>();
+            pro.StartInfo.FileName = "cmd.exe";
+            pro.StartInfo.UseShellExecute = false;
+            pro.StartInfo.RedirectStandardInput = true;
+            pro.StartInfo.RedirectStandardOutput = true;
+            pro.StartInfo.RedirectStandardError = true;
+            pro.StartInfo.CreateNoWindow = true;
+            pro.Start();
+            pro.StandardInput.WriteLine("netstat -ano");
+            pro.StandardInput.WriteLine("exit");
+            Regex reg = new Regex("\\s+", RegexOptions.Compiled);
+            string line = null;
+            while ((line = pro.StandardOutput.ReadLine()) != null)
+            {
+                line = line.Trim();
+                if (line.StartsWith("UDP", StringComparison.OrdinalIgnoreCase))
+                {
+                    line = reg.Replace(line, ",");
+                    string[] arr = line.Split(',');
+                    string soc = arr[1];
+                    int pos = soc.LastIndexOf(':');
+                    int pot = int.Parse(soc.Substring(pos + 1));
+                    ports.Add(pot);
+                    if (nPort == pot)
+                    {
+                        pid = arr[3];
+                        pro.Close(); 
+                        return pid;
+                    }
+                }
+
+            }
+            return pid;
+        }
     }
 }

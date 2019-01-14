@@ -15,7 +15,7 @@ namespace Lxsh.Project.Common
         public RedisCache()
         {
             _databaseIndex = 0;
-            string config = "localhost:6379";
+             string config = "localhost:6379";
             _redisConnection = ConnectionMultiplexer.Connect(config);
         }
 
