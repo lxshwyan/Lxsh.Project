@@ -15,12 +15,22 @@ namespace Lxsh.Project.Dapper.Demo
     {
         static void Main(string[] args)
         {
-            new Program().GetPid(8888);
+            test(new string[]{"fsf","fsfs"});
+           // new Program().GetPid(8888);
            // Test test = new Test() { MyProperty = "111" };
 
             //  Test test1 = new Test() { MyProperty = "111" };
 
         }
+
+        static void test(params string[] s)
+        {
+            foreach (var VARIABLE in s)
+            {
+                Console.WriteLine(VARIABLE);
+            }
+        }
+
         static void Insert()
         {
             IDbConnection  connection=  new SqlConnection("Data Source = '.'; Initial Catalog = 'UniDataXM'; User ID = 'sa'; Password = '123456'; MultipleActiveResultSets = 'true'");

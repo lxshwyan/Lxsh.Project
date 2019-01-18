@@ -117,9 +117,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lxsh.Project.CoreWebApi", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "11 .NET Core", "11 .NET Core", "{ADB565F5-162A-4075-B31F-8A7978948EAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lxsh.Project.NetCore.ConsoleDemo", "Lxsh.Project.NetCore.ConsoleDemo\Lxsh.Project.NetCore.ConsoleDemo.csproj", "{3753F4C6-50EC-4132-8A62-0530D4B8FF9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lxsh.Project.NetCore.ConsoleDemo", "Lxsh.Project.NetCore.ConsoleDemo\Lxsh.Project.NetCore.ConsoleDemo.csproj", "{3753F4C6-50EC-4132-8A62-0530D4B8FF9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lxsh.Project.NetCore.Web", "Lxsh.Project.NetCore.Web\Lxsh.Project.NetCore.Web.csproj", "{3FC9C834-5596-43FB-BB48-2D6DC83E57FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lxsh.Project.NetCore.Web", "Lxsh.Project.NetCore.Web\Lxsh.Project.NetCore.Web.csproj", "{3FC9C834-5596-43FB-BB48-2D6DC83E57FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lxsh.Project.SignalR.Demo", "Lxsh.Project.SignalR.Demo\Lxsh.Project.SignalR.Demo.csproj", "{ABB7639E-8970-412A-88C3-61B822F07172}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lxsh.Project.SignalRServer.Demo", "Lxsh.Project.SignalRServer.Demo\Lxsh.Project.SignalRServer.Demo.csproj", "{19C3DD50-5476-458A-8D3D-1A3CDEE274E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -319,6 +323,14 @@ Global
 		{3FC9C834-5596-43FB-BB48-2D6DC83E57FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3FC9C834-5596-43FB-BB48-2D6DC83E57FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3FC9C834-5596-43FB-BB48-2D6DC83E57FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABB7639E-8970-412A-88C3-61B822F07172}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABB7639E-8970-412A-88C3-61B822F07172}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABB7639E-8970-412A-88C3-61B822F07172}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABB7639E-8970-412A-88C3-61B822F07172}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19C3DD50-5476-458A-8D3D-1A3CDEE274E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19C3DD50-5476-458A-8D3D-1A3CDEE274E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19C3DD50-5476-458A-8D3D-1A3CDEE274E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19C3DD50-5476-458A-8D3D-1A3CDEE274E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -372,6 +384,8 @@ Global
 		{FDB919DF-9153-4871-B246-4BF76DC7CFC0} = {269C7015-CD5D-4415-84E0-3CCD62DB6B15}
 		{3753F4C6-50EC-4132-8A62-0530D4B8FF9B} = {ADB565F5-162A-4075-B31F-8A7978948EAC}
 		{3FC9C834-5596-43FB-BB48-2D6DC83E57FC} = {ADB565F5-162A-4075-B31F-8A7978948EAC}
+		{ABB7639E-8970-412A-88C3-61B822F07172} = {C70DAB71-276C-4F28-855C-F3C2E5AA61EC}
+		{19C3DD50-5476-458A-8D3D-1A3CDEE274E3} = {C70DAB71-276C-4F28-855C-F3C2E5AA61EC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3C58FD0B-C4A3-49D3-9ECD-0D21FE6FF8B4}

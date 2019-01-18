@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div id="content"></div>
+
+
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+<script type="text/javascript">
+    var conn = $.hubConnection("http://192.168.137.111:8012/myhub", { qs: "username=1111111111111111111111111111111111111111111111111111" });
+    //通过的代理类
+    var proxy = conn.createHubProxy("MyConnection");
+    //定义客户端方法
+    proxy.on("notice", function (msg) {
+        console.log(msg);
+        $("#content").append("<p>" + msg+"</p>");
+    });
+
+    proxy.on("Welcome", function (msg) {
+        console.log(msg);
+    });
+
+    conn.start().done(function (data) {
+        console.log(data);
+
+        //调用 server 端的方法
+        proxy.invoke("Hello", 100).done(function (msg) {
+            console.log(msg);
+        }).fail(function (data) {
+            console.log(data);
+        });
+
+
+
+    }).fail(function (data) {
+        console.log(data);
+    });
+     
+</script>
