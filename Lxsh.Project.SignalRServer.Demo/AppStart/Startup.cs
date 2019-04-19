@@ -25,12 +25,26 @@ namespace Lxsh.Project.SignalRServer.Demo.AppStart
 
     public class Startup
     {
-        /// <summary>
-        ///  开启服务
-        /// </summary>
-        public static void Start()
+
+        SocketMessageMng socket;
+        private  void InitUdp(int port = 8893)
         {
-            string SignalRURI = "http://localhost:6178";
+            try
+            {
+                SocketMessageMng socket = new SocketMessageMng(port);
+                socket.UdpStartListen();
+                socket.SetTextEvent += Socket_SetTextEvent;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Udp异常：{0}", ex.ToString());
+
+            }
+
+
+        }
+        private  void InitSinalR(string SignalRURI = "http://localhost:6178")
+        {
             try
             {
                 try
@@ -38,30 +52,20 @@ namespace Lxsh.Project.SignalRServer.Demo.AppStart
                     using (WebApp.Start(SignalRURI, builder =>
                     {
                         builder.Map("/signalr", map =>
-                        {
-                            // Setup the cors middleware to run before SignalR.
-                            // By default this will allow all origins. You can 
-                            // configure the set of origins and/or http verbs by
-                            // providing a cors options with a different policy.
+                        {    
                             map.UseCors(CorsOptions.AllowAll);
                             var hubConfiguration = new HubConfiguration
-                            {
-                                // You can enable JSONP by uncommenting line below.
-                                // JSONP requests are insecure but some older browsers (and some
-                                // versions of IE) require JSONP to work cross domain
+                            {  
                                 EnableJSONP = true
-                            };
-                            // Run the SignalR pipeline. We're not using MapSignalR
-                            // since this branch is already runs under the "/signalr"
-                            // path.
+                            };   
                             map.RunSignalR(hubConfiguration);
                         });
                         builder.MapSignalR();
-                      
+
                     }))
                     {
-                        Console.WriteLine("服务开启成功,运行在{0}", SignalRURI+"/signalr");
-                        MsgTest();
+                        Console.WriteLine("服务开启成功,运行在{0}", SignalRURI + "/signalr");
+
                         Console.ReadLine();
                     }
                 }
@@ -76,27 +80,44 @@ namespace Lxsh.Project.SignalRServer.Demo.AppStart
                 Console.WriteLine("服务开启异常：{0}", ex.ToString());
                 Console.ReadLine();
             }
+        }
+        private  void Socket_SetTextEvent(string msg)
+        {
+            msg = string.Format("{0}:收到信息：{1}", DateTime.Now.ToString(), msg);
+            Console.WriteLine(msg);
+            MsgTest(msg);
 
         }
 
-        public static void MsgTest()
-        {       
+        public  void MsgTest(string msg)
+        {
             var hub = GlobalHost.ConnectionManager.GetHubContext<MyConnection>();
-            while (true)
-            {     
-                foreach (var item in MyConnection.dictionary)
+
+            foreach (var item in MyConnection.dictionary)
+            {
+
+                if (hub != null && item.Key != null)
                 {
-
-                    if (hub != null && item.Key != null)
-                    {
-                        hub.Clients.Client(item.Key)
-                            .notice("当前收到信息:"+DateTime.Now.ToString());
-                    }
-                    Thread.Sleep(1000);
-                }
-
+                    hub.Clients.Client(item.Key)
+                        .notice(msg);
+                }   
             }
 
+        }
+        /// <summary>
+        ///  开启服务
+        /// </summary>
+        public void Start()
+        {
+            InitUdp();
+            InitSinalR();
+        }
+        /// <summary>
+        /// 停止服务
+        /// </summary>
+        public void Stop()
+        {
+            socket.Dis();
         }
     }
 }

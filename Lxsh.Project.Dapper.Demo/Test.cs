@@ -21,7 +21,22 @@ namespace Lxsh.Project.Dapper.Demo
 {
    public class Test
     {
-        public static string str { get; set; }
+        public  string str { get; set; }
         public string MyProperty { get; set; }
+        public void Say()
+        {
+          
+        }
+    }
+
+    public class SonTest:Test
+    {
+        public  string Name { get; set; }    
+        public void Say()
+        {
+           
+            base.Say();
+        }
+       
     }
 }

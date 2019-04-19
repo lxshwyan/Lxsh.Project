@@ -26,6 +26,7 @@ namespace Lxsh.Project.Common.Web.IOC
         /// <returns></returns>
         public static IUnityContainer GetContainer(string containerName = "LxshContainer")
         {
+         
             if (!_UnityContainerDictionary.ContainsKey(containerName))
             {
                 lock (_SyncHelper)

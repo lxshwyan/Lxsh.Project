@@ -36,6 +36,10 @@ namespace Lxsh.Project.SignalRServer.Demo.Client
             {
                 Console.WriteLine(msg);
             });
+            proxy.On("ALLInfo", (msg) =>
+          {
+              Console.WriteLine(msg);
+          });
             conn.Start().Wait();
 
            var info = proxy.Invoke<string>("Hello", 100).Result;

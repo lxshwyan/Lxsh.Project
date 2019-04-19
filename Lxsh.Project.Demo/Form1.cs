@@ -45,15 +45,15 @@ namespace Lxsh.Project.Demo
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string  T=  GetPid(7819);
-            foreach (System.Diagnostics.Process item in System.Diagnostics.Process.GetProcesses())
-            {
-                if (item.Id.ToString() == GetPid(7819))
-                {
-                    item.Kill();
-                }
+            //string  T=  GetPid(7819);
+            //foreach (System.Diagnostics.Process item in System.Diagnostics.Process.GetProcesses())
+            //{
+            //    if (item.Id.ToString() == GetPid(7819))
+            //    {
+            //        item.Kill();
+            //    }
                
-            }
+            //}
           //  MessageBox.Show(T);
         }
         public async Task<int> GetVAsync(int t)
@@ -66,8 +66,35 @@ namespace Lxsh.Project.Demo
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {    
+        {
+            IsSystemProcess("Lxsh.Project.Demo");
+            KillProcess("Lxsh.Project.Demo");
             Console.WriteLine("主线程调用完成");
+        }
+        public static void KillProcess(string processName)
+        {
+
+            Process[] process = Process.GetProcessesByName(processName);
+            foreach (var item in process)
+            {
+                item.Kill();
+            }
+
+        }
+        /// <summary>
+        /// 判断用户是否系统进程信息 （或系统进程启动的）
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
+        public static bool IsSystemProcess(string processName)
+        {
+            System.Diagnostics.Process p = System.Diagnostics.Process.GetCurrentProcess();
+          
+            if (p.StartInfo.UserName.ToUpper() == "SYSTEM" || p.StartInfo.UserName.ToUpper() == "NETWORK SERVICE" || p.StartInfo.UserName.ToUpper() == "LOCAL SERVICE")
+            {   
+                return true;
+            }
+            return false;
         }
         public string GetPid(int nPort)
         {

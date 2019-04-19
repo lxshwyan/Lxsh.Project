@@ -32,7 +32,7 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
                     var bodyMsg = new SystemMessage()
                     {
                        // Content = $"第{i}条信息:{ input}",
-                         Content= $"定时第{i}条信息",
+                        Content= $"定时第{i}条信息",
                         DateTime = DateTime.Now.ToString(),
                         Title = "四方博瑞安防平台信息",
                         Type = "log".ToJson()

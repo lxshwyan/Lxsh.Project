@@ -1,4 +1,5 @@
-﻿using Lxsh.Project.Common;
+﻿using Lxsh.Project.Bussiness.Interface;
+using Lxsh.Project.Common;
 using Lxsh.Project.Common.ImageHelper;
 using Lxsh.Project.Common.Web.Models;
 using System;
@@ -16,7 +17,15 @@ namespace Lxsh.Project.Web.Controllers
     [AllowAnonymousAttribute]
     public class LoginController : Controller
     {
-        
+        public LoginController(IBase_SysLogService _base_SysLogBusiness,
+            IUserDepDepartmentService _UserDepDepartmentService)
+        {
+            this._base_SysLogBusiness = _base_SysLogBusiness;
+            this._UserDepDepartmentService = _UserDepDepartmentService;
+        }
+
+        public IBase_SysLogService _base_SysLogBusiness { get; set; }
+        public IUserDepDepartmentService _UserDepDepartmentService { get; set; }
         public ActionResult index()
         {
           

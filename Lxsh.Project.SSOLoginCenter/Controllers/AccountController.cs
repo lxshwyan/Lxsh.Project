@@ -14,7 +14,9 @@ namespace Lxsh.Project.SSOLoginCenter.Controllers
     public class AccountController : Controller
     {
         private static Logger logger = Logger.CreateLogger(typeof(AccountController));
+        
         public IUserService UserService { get; set; }
+        public IUserDepDepartmentService UserDepDepartmentService { get; set; }  
         // GET: Account
         public ActionResult Index()
         {

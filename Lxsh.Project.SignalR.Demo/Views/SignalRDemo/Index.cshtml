@@ -11,7 +11,7 @@
 <script src="~/Scripts/jquery-3.3.1.js"></script>
 <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
 <script type="text/javascript">
-    var conn = $.hubConnection("http://192.168.137.111:8012/myhub", { qs: "username=1111111111111111111111111111111111111111111111111111" });
+    var conn = $.hubConnection("/myhub", { qs: "username=1111111111111111111111111111111111111111111111111111" });
     //通过的代理类
     var proxy = conn.createHubProxy("MyConnection");
     //定义客户端方法
