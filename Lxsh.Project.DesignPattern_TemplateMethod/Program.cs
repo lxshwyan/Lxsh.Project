@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,14 +15,8 @@ namespace Lxsh.Project.DesignPattern_TemplateMethod
     {
         static void Main(string[] args)
         {
+       
 
-            Exam exam = new ZhangSan();
-
-            exam.Questions();
-
-            Exam exam2 = new Lisi();
-
-            exam2.Questions();
         }
     }
 }

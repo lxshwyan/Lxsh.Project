@@ -46,6 +46,7 @@
     <Compile Include="DBLog.cs" />
     <Compile Include="EunmLog.cs" />
     <Compile Include="FileLog.cs" />
+    <Compile Include="HandlerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendMsgLog.cs" />

@@ -49,6 +49,7 @@
     <Compile Include="ConcreateHandleB.cs" />
     <Compile Include="ConcreateHandleC.cs" />
     <Compile Include="ContentMsg.cs" />
+    <Compile Include="HandlerFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
