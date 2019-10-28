@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Lxsh.Project.Common.RabbitMQ;
+using System.Configuration;
 
 namespace Lxsh.Project.Common.RabbbitMQ.Demo
 {
@@ -17,7 +18,8 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
             string strErrorMsg = "";
             Console.WriteLine("请输入你要选择的发送端和接收端==1为发，2为收");
             string type = Console.ReadLine();
-            MQHelper tMQHelper = MQHelperFactory.CreateBus("host=127.0.0.1:5672;virtualHost=/;username=lxsh;password=123456");
+            string connStr = System.Configuration.ConfigurationManager.AppSettings["connStr"] ?? "host=127.0.0.1:5672;virtualHost=/;username=lxsh;password=123456";
+            MQHelper tMQHelper = MQHelperFactory.CreateBus(connStr);
             if (type == "1")
             {        
                 Console.WriteLine("================================开始发送消息================================");
@@ -27,7 +29,7 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
                 //while ((input = Console.ReadLine()) != "Quit")
                 while(true)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(10);
                     i++;
                     var bodyMsg = new SystemMessage()
                     {
@@ -46,7 +48,7 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
                 }
             }
             else
-            {
+            {     
                 tMQHelper.TopicSubscribe(Guid.NewGuid().ToString(), s => Console.WriteLine("当前收到信息："+s.Body.FromJson<SystemMessage>().Content),true, CategoryMessage.System.ToString() + ".*", CategoryMessage.Alarm.ToString() + ".*");
                 Console.WriteLine("Please enter a message. 'Quit' to quit.");
             }

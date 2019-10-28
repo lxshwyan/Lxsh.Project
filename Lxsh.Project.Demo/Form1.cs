@@ -10,7 +10,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using System.Windows.Forms;
 
 namespace Lxsh.Project.Demo
@@ -45,6 +47,7 @@ namespace Lxsh.Project.Demo
 
         private void Form1_Load(object sender, EventArgs e)
         {
+          
             //string  T=  GetPid(7819);
             //foreach (System.Diagnostics.Process item in System.Diagnostics.Process.GetProcesses())
             //{
@@ -52,9 +55,9 @@ namespace Lxsh.Project.Demo
             //    {
             //        item.Kill();
             //    }
-               
+
             //}
-          //  MessageBox.Show(T);
+            //  MessageBox.Show(T);
         }
         public async Task<int> GetVAsync(int t)
         {
@@ -134,5 +137,30 @@ namespace Lxsh.Project.Demo
             }
             return pid;
         }
+
+      
+
+    }
+
+    public class DoorMessage
+    {
+        public int AssertTypeID;
+
+        public int DevType { get; set; }
+        public string AssertGroupID { get; set; }
+        public int TypeID { get; set; }
+        public string Expression { get; set; }
+        public string JY { get; set; }
+        public string Dept { get; set; }
+        public string Photo { get; set; }
+        public string DateTime { get; set; }
+        public string Address { get; set; }
+        public string CardID { get; set; }
+        public string AssertName { get; set; }
+        public string AssertID { get; set; }
+        public string DoorID { get; set; }
+        public string StatuesID { get; set; }
+        public int CheckResult { get; set; }
     }
 }
+
