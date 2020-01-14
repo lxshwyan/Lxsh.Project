@@ -175,13 +175,13 @@ namespace Lxsh.Project.WebSocketServerTest
 
         protected override void OnOpen()
         {
-            //只响应一个连接
-            if (Sessions.Count > 1)
-            {
-                Context.WebSocket.Close();
-                return;
-            }
-            LastConnectedPort = Context.UserEndPoint.Port;
+            ////只响应一个连接
+            //if (Sessions.Count > 1)
+            //{
+            //    Context.WebSocket.Close();
+            //    return;
+            //}
+            //LastConnectedPort = Context.UserEndPoint.Port;
             base.OnOpen();
         }
 
@@ -198,6 +198,7 @@ namespace Lxsh.Project.WebSocketServerTest
 
         protected override void OnMessage(MessageEventArgs e)
         {
+            Send(e.Data);
             SfWebPlusCallModel result = null;
             var jss = new System.Web.Script.Serialization.JavaScriptSerializer();
             try

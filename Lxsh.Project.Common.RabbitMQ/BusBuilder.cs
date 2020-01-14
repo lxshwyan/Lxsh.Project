@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lxsh.Project.Common.RabbitMQ
+namespace SFBR.RabbitMQ
 {
     /// <summary>
     /// 消息服务器连接器

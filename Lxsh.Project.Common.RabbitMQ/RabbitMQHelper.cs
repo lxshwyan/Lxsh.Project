@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Lxsh.Project.Common.RabbitMQ
+namespace SFBR.RabbitMQ
 {
     public  class RabbitMQHelper
     {

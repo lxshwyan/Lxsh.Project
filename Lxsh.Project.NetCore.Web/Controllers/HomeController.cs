@@ -15,7 +15,10 @@ namespace Lxsh.Project.NetCore.Web.Controllers
         {
            var config = appConfig.Get("appconfig");
         }
-
+        public IActionResult TestVue()
+        {
+            return View();
+        }
         public IActionResult Index()
         {
             return View();

@@ -213,9 +213,9 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Lxsh.Project.Common.RabbitMQ\Lxsh.Project.Common.RabbitMQ.csproj">
+    <ProjectReference Include="..\Lxsh.Project.Common.RabbitMQ\SFBR.RabbitMQ.csproj">
       <Project>{546e6400-8fb0-4642-b286-9ce2bf9f320a}</Project>
-      <Name>Lxsh.Project.Common.RabbitMQ</Name>
+      <Name>SFBR.RabbitMQ</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

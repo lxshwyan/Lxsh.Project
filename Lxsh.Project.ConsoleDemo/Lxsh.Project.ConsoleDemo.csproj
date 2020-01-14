@@ -49,10 +49,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbHelperSQLite.cs" />
+    <Compile Include="TestMemoryStream.cs" />
     <Compile Include="TestRandoPort.cs" />
     <Compile Include="TestSQLite.cs" />
     <Compile Include="TestRegexWrite.cs" />
     <Compile Include="TestTextReader.cs" />
+    <Compile Include="TestYiled.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

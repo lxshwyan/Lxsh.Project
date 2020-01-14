@@ -80,6 +80,12 @@ namespace Lxsh.Project.ChangeWndRect.Demo
         {
             this.pannelVideo.Visible = true;
         }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+           
+            MessageBox.Show($"this.Location.X={this.Location .X} this.Location.Y={this.Location.Y}");
+        }
     }
 
     public enum RetCode

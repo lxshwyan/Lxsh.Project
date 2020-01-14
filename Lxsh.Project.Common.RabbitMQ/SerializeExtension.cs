@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Lxsh.Project.Common.RabbitMQ
+namespace SFBR.RabbitMQ
 {
     public static class SerializeExtension
     {

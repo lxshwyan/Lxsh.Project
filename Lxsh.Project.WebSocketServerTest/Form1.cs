@@ -38,7 +38,7 @@ namespace Lxsh.Project.WebSocketServerTest
             SfWebPlus.ActiveFormHandle = this.Handle;
 
             //启动服务端
-            Ws_Server = new WebSocketServer(8893, false);
+            Ws_Server = new WebSocketServer(8895, false);
             Ws_Server.Log.Level = LogLevel.Error;
             Ws_Server.AddWebSocketService<SfWebPlusCall>("/LxshProject");
             Ws_Server.Start();

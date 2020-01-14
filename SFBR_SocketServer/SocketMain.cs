@@ -42,7 +42,7 @@ namespace SFBR_SocketServer
                 server.Disconnection += new TxDelegate<IPEndPoint, string>(disconnection);
                 server.EngineClose += new TxDelegate(engineClose);
                 server.EngineLost += new TxDelegate<string>(engineLost);  
-                server.StartEngine();
+                server.StartEngine();  
                 Console.WriteLine($"服务器启动成功！！！！正在监听{serverPort}");
             }
             catch (Exception)
@@ -60,7 +60,7 @@ namespace SFBR_SocketServer
         /// <param name="str"></param>
         private void acceptString(IPEndPoint ipEndPoint, string str)
         {
-            Console.WriteLine($" 接收时间：{DateTime.Now.ToString()},客户端节点：{ipEndPoint.ToString()},接收内容：{str}"  );   
+           Console.WriteLine($" 接收时间：{DateTime.Now.ToString()},客户端节点：{ipEndPoint.ToString()},接收内容：{str}"  );  
         }
         /// <summary>
         /// 当接收到来之客户端的图片信息的时候
@@ -68,9 +68,7 @@ namespace SFBR_SocketServer
         /// <param name="ipEndPoint"></param>
         /// <param name="bytes"></param>
         private void acceptBytes(IPEndPoint ipEndPoint, byte[] bytes)
-        {
-        //    MessageBox.Show(bytes.Length.ToString());
-        //    this.pictureBox1.Image = objectByte.ReadImage(bytes);
+        {  
         }
         /// <summary>
         /// 当有客户端连接上来的时候
@@ -90,16 +88,29 @@ namespace SFBR_SocketServer
             Console.WriteLine($"{DateTime.Now.ToString()}：已向" + ipEndPoint.ToString() + "发送成功");
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ipEndPoint"></param>
+        /// <param name="str"></param>
+        private void SendAllClient(string msg)
+        {
+            this.server.ClientAll?.ForEach(item =>
+            {
+                server.sendMessage(item, msg);
+            });       
+
+        }
+        /// <summary>
         /// 当有客户端掉线的时候
         /// </summary>
         /// <param name="state"></param>
         /// <param name="str"></param>
         private void disconnection(IPEndPoint ipEndPoint, string str)
-        {
-
+        {    
             Console.WriteLine($" 接收时间：{DateTime.Now.ToString()},客户端节点：{ipEndPoint.ToString()},下线");
             ClientNumber();
         }
+
         /// <summary>
         /// 当服务器完全关闭的时候
         /// </summary>
@@ -115,7 +126,7 @@ namespace SFBR_SocketServer
         private void engineLost(string str)
         { Console.WriteLine($"服务器非正常时间：{DateTime.Now.ToString()}： {str}"); }
         /// <summary>
-        /// 下面显示的
+        /// 
         /// </summary>
         /// <param name="ipEndPoint"></param>
         /// <param name="str"></param>

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EasyNetQ;
 
-namespace Lxsh.Project.Common.RabbitMQ
+namespace SFBR.RabbitMQ
 {
     public enum CategoryMessage
     {   
@@ -24,16 +24,46 @@ namespace Lxsh.Project.Common.RabbitMQ
         Unknown  //未知信息
 
     }
-    [Queue("Lxsh.Project.Common.RabbitMQ.MessagesQueue", ExchangeName = "Lxsh.Project.Common.RabbitMQ.Exchange")]
+    [Queue("SFBR.RabbitMQ.MessagesQueue", ExchangeName = "SFBR.RabbitMQ.Exchange")]
     public class RabbitMQMsg
     {  
-       public RabbitMQMsg() { }   
-       public string Src { set; get; }
-       public string Dst { set; get; }
-       public CategoryMessage Category { set; get; }
-       public string SendTime { set; get; }
-       public string Body { set; get; }
-      
+       public RabbitMQMsg() { }
+        /// <summary>
+        /// 消息事件ID （建议唯一guid）
+        /// </summary>
+        public string EventId { get; set; }
+        /// <summary>
+        /// 消息名称
+        /// </summary>
+        public string EventName { get; set; }
+        /// <summary>
+        /// 消息等级
+        /// </summary>
+        public int EventLevel { get; set; }
+        /// <summary>
+        /// 消息来源ID
+        /// </summary>
+        public string SourceId { set; get; }
+        /// <summary>
+        /// 消息来源名称
+        /// </summary>
+        public string SourceName { set; get; }
+        /// <summary>
+        /// 预留字段
+        /// </summary>
+        public string EventDst { set; get; }
+        /// <summary>
+        /// 消息类别
+        /// </summary>
+       public CategoryMessage EventCategory { set; get; }
+        /// <summary>
+        /// 消息发送时间
+        /// </summary>
+       public string EventSendTime { set; get; }
+        /// <summary>
+        /// 消息内容
+        /// </summary>
+       public string Body { set; get; }   
     }
 
     /*

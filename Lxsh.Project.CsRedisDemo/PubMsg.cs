@@ -12,20 +12,21 @@
 *描述：
 ************************************************************************/
 using CSRedis;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Lxsh.Project.CsRedisDemo
 {
-   public class PubMsg
+    public class PubMsg
     {
         public CSRedisClient csRedisClient;
         public PubMsg()
         {
-           csRedisClient = new CSRedis.CSRedisClient("127.0.0.1:6379,password=123,defaultDatabase=0,poolsize=50,ssl=false,writeBuffer=10240");
+            csRedisClient = new CSRedis.CSRedisClient("127.0.0.1:6379,password=123,defaultDatabase=0,poolsize=50,ssl=false,writeBuffer=10240");
         }
-      
+
         public void Subscribe(string chanl, Action<CSRedis.CSRedisClient.SubscribeMessageEventArgs> action)
         {
             csRedisClient.Subscribe((chanl, action));
@@ -39,7 +40,7 @@ namespace Lxsh.Project.CsRedisDemo
         {
             return csRedisClient.Lock(key, 10);
         }
-        public  bool SetNx(string key, long time, double expireMS)
+        public bool SetNx(string key, long time, double expireMS)
         {
             if (csRedisClient.SetNx(key, time))
             {
@@ -50,9 +51,11 @@ namespace Lxsh.Project.CsRedisDemo
             return false;
         }
 
-        public  bool Remove(string key)
+        public bool Remove(string key)
         {
             return csRedisClient.Del(key) > 0;
         }
     }
+
+    
 }

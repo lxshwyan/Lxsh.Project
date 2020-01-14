@@ -17,6 +17,7 @@ namespace Lxsh.Project.CameraAforge
         private VideoCaptureDevice videoDevice;
         private VideoCapabilities[] videoCapabilities;
         private VideoCapabilities[] snapshotCapabilities;
+        private object objLock = new object();
         public Form1()
         {
             InitializeComponent();
@@ -65,6 +66,8 @@ namespace Lxsh.Project.CameraAforge
                 if ((videoCapabilities != null) && (videoCapabilities.Length != 0))
                 {
                     videoDevice.VideoResolution = videoCapabilities[cmbResolution.SelectedIndex];
+                    //设置对应的事件
+                    videoDevice.NewFrame += VideoDevice_NewFrame;
 
                     vispShoot.VideoSource = videoDevice;
                     vispShoot.Start();
@@ -72,6 +75,29 @@ namespace Lxsh.Project.CameraAforge
                     EnableControlStatus(false);
                 }
             }
+        }
+
+        private void VideoDevice_NewFrame(object sender, AForge.Video.NewFrameEventArgs eventArgs)
+        {
+            lock (objLock)
+                        {
+                            Bitmap bmp = null;
+                       // if (isMultiPhoto)
+                            {
+                                bmp = (System.Drawing.Bitmap)eventArgs.Frame.Clone();
+                             picbPreview.Image = bmp;
+                    //string imgFolder = Common.GetImagePath();
+                    //string picName = string.Format("{0}\\{1}.jpg", imgFolder, DateTime.Now.ToString("yyyyMMddHHmmss"));
+                    //Common.SaveImage(picName, bmp);
+                }
+                            //Write Videos
+                // if (isRecordVideo)
+                              {
+                                //  bmp = (System.Drawing.Bitmap)eventArgs.Frame.Clone();
+                                 // videoWriter.WriteVideoFrame(bmp);
+                              }
+                      }
+
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
