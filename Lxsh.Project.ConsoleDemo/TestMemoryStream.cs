@@ -45,15 +45,15 @@ namespace Lxsh.Project.ConsoleDemo
                 {
                     try
                     {
-                        ms.Write(testBytes, 0, testBytes.Length);
+                        ms.Write(testBytes,0, testBytes.Length);
                     }
                     catch
                     {
-                        Console.WriteLine("该内存流已经使用了{0}M容量的内存,该内存流最大容量为{1}M,溢出时容量为{2}M",
-                            GC.GetTotalMemory(false) / (1024 * 1024),//MemoryStream已经消耗内存量
-                            ms.Capacity / (1024 * 1024), //MemoryStream最大的可用容量
-                            ms.Length / (1024 * 1024));//MemoryStream当前流的长度（容量）
-                        break;
+                      Console.WriteLine("该内存流已经使用了{0}M容量的内存,该内存流最大容量为{1}M,溢出时容量为{2}M",
+                      GC.GetTotalMemory(false) / (1024 * 1024),//MemoryStream已经消耗内存量
+                      ms.Capacity / (1024 * 1024), //MemoryStream最大的可用容量
+                      ms.Length / (1024 * 1024));//MemoryStream当前流的长度（容量）
+                      break;
                     }
                 }
             }

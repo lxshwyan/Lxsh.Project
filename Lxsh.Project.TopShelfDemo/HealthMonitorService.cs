@@ -95,6 +95,7 @@ namespace Lxsh.Project.TopShelfDemo
                 }
                 try
                 {
+                    
                     logger.Info("【{0}】Application[{1}] not exists.Prepare to restart. ",DateTime.Now.ToString(), app.ProcessName);
                     Console.WriteLine("【{0}】Application[{1}] not exists.Prepare to restart. ",DateTime.Now.ToString(), app.ProcessName);
                     // 当前主机进程列表中没有需要守护的进程名称，则启动这个进程对应的应用程序
@@ -111,13 +112,18 @@ namespace Lxsh.Project.TopShelfDemo
 
         public void Start()
         {
+            logger.Info("正在启动");
+         
             _Apps = GetAppsInfo();
             Task.Run(() =>
             {
                 while (true)
                 {
+                   
                     Monitor();
                     Thread.Sleep(_monitorInterval * 1000);
+
+                   
                 }
 
             });

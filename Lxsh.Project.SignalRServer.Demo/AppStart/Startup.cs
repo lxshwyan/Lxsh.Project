@@ -19,6 +19,7 @@ using System;
 using System.Reflection;
 using System.Threading;
 using Lxsh.Project.SignalRServer.Demo.Hub;
+using Microsoft.AspNet.SignalR.Redis;
 
 namespace Lxsh.Project.SignalRServer.Demo.AppStart
 {
@@ -43,12 +44,14 @@ namespace Lxsh.Project.SignalRServer.Demo.AppStart
 
 
         }
-        private  void InitSinalR(string SignalRURI = "http://localhost:6178")
+        private  void InitSinalR(string SignalRURI = "http://localhost:7178")
         {
             try
             {
                 try
                 {
+                    GlobalHost.DependencyResolver.UseRedis(
+                        new RedisScaleoutConfiguration("192.168.137.252", 6379, string.Empty, "SignalrAndRedis") { Database = 15 });
                     using (WebApp.Start(SignalRURI, builder =>
                     {
                         builder.Map("/signalr", map =>

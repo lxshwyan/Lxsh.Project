@@ -20,8 +20,9 @@ namespace Lxsh.Project.NetCore.Web
             var path = context.Request.Path.Value;
             if (path.EndsWith("lxsh"))
             {
+             var t=   context.Request.Cookies["name"].ToString();
                 context.Response.ContentType = "text/plain; charset=utf-8";
-                return context.Response.WriteAsync("您好，北京欢迎你");
+                return context.Response.WriteAsync($"您好{t}，北京欢迎你");
                 // var mypath = path.TrimStart('/');
                 //  return context.Response.SendFileAsync(mypath);
             }

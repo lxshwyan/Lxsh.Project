@@ -1,0 +1,64 @@
+﻿@{
+
+    //string strUrl = "http://yjzh.zjsjy.gov:8002/webapi.amap.com/maps?v=1.4.15&key=5c47ade23793ac702e837e1a096f7684&plugin=AMap.Geocoder,AMap.Weather,AMap.ControlBar,AMap.DistrictSearch,ElasticMarker,AMap.CustomLayer,cvector,AMap.IndoorMap";
+
+    #region
+
+    string strUrl = "http://yjzh.zjsjy.gov:8002/webapi.amap.com/maps?v=1.4.15&key=5c47ade23793ac702e837e1a096f7684&plugin=AMap.Geocoder,AMap.Weather,AMap.ControlBar,AMap.DistrictSearch,ElasticMarker,AMap.CustomLayer,cvector,AMap.IndoorMap";
+
+    string strResult = "";
+    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(strUrl);
+    request.Method = "GET";
+    request.Timeout = 3000;
+    try
+    {
+        using (WebResponse response = request.GetResponse())
+        {
+            using (Stream stream = response.GetResponseStream())
+            {
+                StreamReader sr = new StreamReader(stream);
+                strResult = sr.ReadToEnd();
+            }
+        }
+    }
+    catch (WebException ex)
+    {
+        if (ex.Response == null)
+        {
+            throw ex;
+        }
+        HttpWebResponse resp = ((HttpWebResponse)ex.Response);
+        if (resp.StatusCode == HttpStatusCode.BadRequest)
+        {
+            using (var stream = ex.Response.GetResponseStream())
+            {
+                using (StreamReader sr = new StreamReader(stream))
+                {
+                    string result = sr.ReadToEnd();
+                    throw new Exception("地图服务代理错误：400 " + Environment.NewLine + result);
+                }
+            }
+        }
+        else
+        {
+            throw new Exception("地图服务代理错误：" + resp.StatusCode + " " + resp.ResponseUri.ToString());
+        }
+    }
+    //string strResult = File.ReadAllText(AppDomain.CurrentDomain.BaseDirectory + "Plugin\\Dsj\\map.js");
+
+    strResult = strResult.Replace("(/webapi.amap.com/", "XXXXXXXXXXXXXXXX");
+    strResult = strResult.Replace("webapi.amap.com", "yjzh.zjsjy.gov:8002/webapi.amap.com");
+    strResult = strResult.Replace("restapi.amap.com", "yjzh.zjsjy.gov:8002/restapi.amap.com");
+    strResult = strResult.Replace("gaode.com", "yjzh.zjsjy.gov:8002/gaode.com");
+    strResult = strResult.Replace("m.amap.com", "yjzh.zjsjy.gov:8002/m.amap.com");
+    strResult = strResult.Replace("vector.amap.com", "yjzh.zjsjy.gov:8002/vector.amap.com");
+    strResult = strResult.Replace("vdata.amap.com", "yjzh.zjsjy.gov:8002/vdata.amap.com");
+    strResult = strResult.Replace("tm.amap.com", "yjzh.zjsjy.gov:8002/tm.amap.com");
+    strResult = strResult.Replace("grid.amap.com", "yjzh.zjsjy.gov:8002/grid.amap.com");
+    strResult = strResult.Replace("yuntuapi.amap.com", "yjzh.zjsjy.gov:8002/yuntuapi.amap.com");
+    strResult = strResult.Replace("XXXXXXXXXXXXXXXX", "(/webapi.amap.com/");
+    #endregion
+}
+<script type="text/javascript">
+    @Html.Raw(strResult)
+</script>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TaskList>
+
+    <TaskConfigModel>
+        <GroupName>TestJobGroup</GroupName>
+        <JobName>TestJob</JobName>
+        <TriggerName>TestJobTrigger</TriggerName>
+        <TimeIntervalType>1</TimeIntervalType>
+    <TimeInterval>1</TimeInterval>
+        <Hours>0</Hours>
+        <Minutes>0</Minutes>
+        <JobClass>TestJob</JobClass>
+        <Enable>true</Enable>
+    </TaskConfigModel>
+
+  
+</TaskList>

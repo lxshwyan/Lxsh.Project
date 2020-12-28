@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,8 +21,8 @@ namespace Lxsh.Project.CefSharpDemo
         }
         private void InitBrowser()
         {
-            webCom = new CefSharp.WinForms.ChromiumWebBrowser("http://192.168.137.134:8886");
-
+            //webCom = new CefSharp.WinForms.ChromiumWebBrowser("http://192.168.137.134:8886");
+            webCom = new CefSharp.WinForms.ChromiumWebBrowser("http://192.168.137.252:8084/Monitor/Index?dataAssertGroupGuid=47a3f5c6-dde5-482d-a270-3c0b37ff694d");
             webCom.Dock = DockStyle.Fill;
             webCom.FrameLoadEnd += WebCom_FrameLoadEnd;
             webCom.FrameLoadStart += WebCom_FrameLoadStart;
@@ -33,7 +34,7 @@ namespace Lxsh.Project.CefSharpDemo
 
         private void WebCom_FrameLoadStart(object sender, FrameLoadStartEventArgs e)
         {
-            MessageBox.Show("开始加载网页");
+          //  MessageBox.Show("开始加载网页");
         }
 
         private void WebCom_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -55,6 +56,22 @@ namespace Lxsh.Project.CefSharpDemo
            webCom.GetBrowser().MainFrame.ExecuteJavaScriptAsync("document.getElementById('Password').value='d2nzjy'");  //调用控件赋值
            webCom.GetBrowser().MainFrame.ExecuteJavaScriptAsync("document.getElementById('btnLogin').click()");    //调用控件赋值
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var pluginsPath = Path.Combine(Environment.CurrentDirectory, "Plugins1");
+            var path1 = Environment.GetEnvironmentVariable("PATH");
+            if (!Environment.GetEnvironmentVariable("PATH").Contains(pluginsPath))
+            {
+                var path = Environment.GetEnvironmentVariable("PATH") + ";" + pluginsPath;
+                Environment.SetEnvironmentVariable("path", path, EnvironmentVariableTarget.Process);
+            }
+            else
+            {
+                MessageBox.Show("环境变量里面已经存在该路径");
+            }
+           
         }
     }
 }

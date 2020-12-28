@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dapper;
@@ -15,11 +13,13 @@ namespace Lxsh.Project.Dapper.Demo
     {
         static void Main(string[] args)
         {
-            test(new string[]{"fsf","fsfs"});
-           // new Program().GetPid(8888);
-           // Test test = new Test() { MyProperty = "111" };
+            /// test(new string[]{"fsf","fsfs"});
+            // new Program().GetPid(8888);
+            // Test test = new Test() { MyProperty = "111" };
 
             //  Test test1 = new Test() { MyProperty = "111" };
+         
+
 
         }
 
@@ -34,6 +34,11 @@ namespace Lxsh.Project.Dapper.Demo
         static void Insert()
         {
             IDbConnection  connection=  new SqlConnection("Data Source = '.'; Initial Catalog = 'UniDataXM'; User ID = 'sa'; Password = '123456'; MultipleActiveResultSets = 'true'");
+
+
+         //   connection.Insert(new { UserName = "jack", Email = "380234234@qq.com", Address = "上海" });
+
+
             var result = connection.Execute("Insert into Users values (@UserName, @Email, @Address)",
                                     new { UserName = "jack", Email = "380234234@qq.com", Address = "上海" });  
         }

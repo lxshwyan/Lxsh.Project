@@ -155,6 +155,7 @@
     <Compile Include="ExtendExpression\Visitor\OperationsVisitor.cs" />
     <Compile Include="Extention\AttributeExtension.cs" />
     <Compile Include="Extention\ExtensionException.cs" />
+    <Compile Include="Extention\HideSensitiveInfoExtension.cs" />
     <Compile Include="Extention\SerializeExtension.cs" />
     <Compile Include="Extention\Extention.Object.cs" />
     <Compile Include="Helper\HttpWebHelper.cs" />
@@ -192,8 +193,10 @@
     <Compile Include="Helper\TreeHelper.cs" />
     <Compile Include="Helper\TypeBuilderHelper.cs" />
     <Compile Include="Helper\XmlHelper.cs" />
+    <Compile Include="ImageHelper\ImgConvert.cs" />
     <Compile Include="ImageHelper\VerifyCodeHelper.cs" />
     <Compile Include="AOP\Behavior\LogBehavior.cs" />
+    <Compile Include="KillProcessHelper.cs" />
     <Compile Include="Log\Logger.cs" />
     <Compile Include="LxshManualautorSet.cs" />
     <Compile Include="MappingExtend\ExpressionGenericMapper.cs" />

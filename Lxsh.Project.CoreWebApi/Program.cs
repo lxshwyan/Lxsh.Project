@@ -14,7 +14,11 @@ namespace Lxsh.Project.CoreWebApi
     {
         public static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder();
+            builder.AddCommandLine(args);
             CreateWebHostBuilder(args).Build().Run();
+           
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

@@ -19,6 +19,7 @@ namespace Lxsh.Project.Demo
         {
             try
             {
+                var url = Setting.Current.PluginServer;//http://x.newlifex.com/
                 // 新版系统内置
                 if (Environment.OSVersion.Version.Major >= 6)
                 {

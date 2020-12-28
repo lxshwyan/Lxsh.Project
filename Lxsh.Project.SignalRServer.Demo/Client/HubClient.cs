@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Lxsh.Project.SignalRServer.Demo.Client
@@ -24,7 +25,7 @@ namespace Lxsh.Project.SignalRServer.Demo.Client
     {
         public static void ClientTest()
         {
-            var conn = new HubConnection("http://localhost:6178/signalr");
+            var conn = new HubConnection("http://localhost:7178/signalr");
 
             var proxy = conn.CreateHubProxy("MyConnection");
 
@@ -41,9 +42,13 @@ namespace Lxsh.Project.SignalRServer.Demo.Client
               Console.WriteLine(msg);
           });
             conn.Start().Wait();
-
-           var info = proxy.Invoke<string>("Hello", 100).Result;
-            Console.ReadKey();
+            while (true)
+            {
+                Thread.Sleep(1000);
+                var info = proxy.Invoke<string>("Hello", 1000000).Result;
+            }
+         
+          //  Console.ReadKey();
         }
     }
 }
