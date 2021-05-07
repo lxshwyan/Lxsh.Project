@@ -18,7 +18,7 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
             string strErrorMsg = "";
             Console.WriteLine("请输入你要选择的发送端和接收端==1为发，2为收");
             string type = Console.ReadLine();
-            string connStr = System.Configuration.ConfigurationManager.AppSettings["connStr"] ?? "host=192.168.137.112:5672;virtualHost=/;username=lxsh;password=123456";
+            string connStr = System.Configuration.ConfigurationManager.AppSettings["connStr"] ?? "host=192.168.137.110:5672;virtualHost=/;username=guest;password=guest";
             Console.WriteLine(connStr);
             MQHelper tMQHelper = MQHelperFactory.CreateBus(connStr);
             if (type == "1")

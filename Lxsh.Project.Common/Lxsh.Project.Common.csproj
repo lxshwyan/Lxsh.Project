@@ -189,6 +189,7 @@
     <Compile Include="Helper\LoopHelper.cs" />
     <Compile Include="Helper\QRCodeHelper.cs" />
     <Compile Include="Helper\RandomHelper.cs" />
+    <Compile Include="Helper\RetryTools.cs" />
     <Compile Include="Helper\TimerHelper.cs" />
     <Compile Include="Helper\TreeHelper.cs" />
     <Compile Include="Helper\TypeBuilderHelper.cs" />
@@ -216,6 +217,9 @@
     <Compile Include="TimeCost.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -267,35 +268,58 @@ namespace Lxsh.Project.GDIDemo
 
         private void button4_Click(object sender, EventArgs e)
         {
-           // Task.Run(() =>
-            //{
-
-            //    while (true)
-            //    {
-            //        this.pictureBox4.ImageLocation = "";
-            //        this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/login.png";
-            //        Thread.Sleep(500);
-            //        this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/bigguohui.png";
-            //        Thread.Sleep(500);
-            //    }
-
-            //});
-
-            ThreadPool.QueueUserWorkItem(new WaitCallback(obj =>
+            FileInfo info = new FileInfo("Desktop.zip");
+            using (FileStream fsRead = info.OpenRead())
             {
+              long  fileLength = fsRead.Length;
+                SetPackegInfo(1, fileLength, "");
+            }
 
-                while (true)
-                {
-                    this.pictureBox4.ImageLocation = "http://192.168.137.250/w111wwroot/images";
-                    this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/login.png";
-                    Thread.Sleep(500);
-                    this.pictureBox4.ImageLocation =  "http://192.168.137.252:8084/wwwroot/images/bigguohui.png";
-                    Thread.Sleep(500);
-                }
-            }));
-          
+                // Task.Run(() =>
+                //{
+
+                //    while (true)
+                //    {
+                //        this.pictureBox4.ImageLocation = "";
+                //        this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/login.png";
+                //        Thread.Sleep(500);
+                //        this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/bigguohui.png";
+                //        Thread.Sleep(500);
+                //    }
+
+                //});
+
+                //ThreadPool.QueueUserWorkItem(new WaitCallback(obj =>
+                //{
+
+                //    while (true)
+                //    {
+                //        this.pictureBox4.ImageLocation = "http://192.168.137.250/w111wwroot/images";
+                //        this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/login.png";
+                //        Thread.Sleep(500);
+                //        this.pictureBox4.ImageLocation =  "http://192.168.137.252:8084/wwwroot/images/bigguohui.png";
+                //        Thread.Sleep(500);
+                //    }
+                //}));
+
+            }
+        private void AddButtons()
+        {
+            // Suspend the form layout and add two buttons.
+           this.SuspendLayout();//控件的布局逻辑被挂起，直到调用 ResumeLayout 方法为止。
+            Button buttonOK = new Button();
+            buttonOK.Location = new Point(10, 10);
+            buttonOK.Size = new Size(75, 125);
+            buttonOK.Text = "OK";
+
+            Button buttonCancel = new Button();
+            buttonCancel.Location = new Point(90, 110);
+            buttonCancel.Size = new Size(75, 25);
+            buttonCancel.Text = "Cancel";
+
+            this.panel1.Controls.AddRange(new Control[] { buttonOK, buttonCancel });
+          // this.ResumeLayout();
         }
-
         private void pictureBox4_Click(object sender, EventArgs e)
         {
             this.pictureBox4.ImageLocation = "http://192.168.137.252:8084/wwwroot/images/bigguohui.png";
@@ -305,6 +329,65 @@ namespace Lxsh.Project.GDIDemo
         private void Form1_SizeChanged(object sender, EventArgs e)
         {
             MessageBox.Show("1111");
+        }
+
+
+        public int GetPackeg(int seqNo, int position, int length, out byte[] bytes)
+        {
+            try
+            {
+                bytes = new byte[length];
+                string fileName = "Desktop.zip";
+                int result = 0;
+                using (FileStream fs = File.OpenRead(fileName))
+                {
+                    fs.Position = position;
+                    result = fs.Read(bytes, 0, length);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public bool SetPackegInfo(int seqNo, long packetLength, string hashCode)
+        {
+            try
+            {
+                using (FileStream fsWrite = new FileStream("test.zip", FileMode.Create))
+                {
+                    byte[] bytes = new byte[1024 * 256];
+                    long left = packetLength;
+                    int maxLength = bytes.Length;
+                    int start = 0;
+                    int num = 0;
+                    while (left > 0)
+                    {
+                        num = 0;
+                        if (left < maxLength)
+                            num = GetPackeg(seqNo, start, Convert.ToInt32(left), out bytes);
+
+                        else
+                            num = GetPackeg(seqNo, start, maxLength, out bytes);
+
+                   
+                        fsWrite.Write(bytes, 0, bytes.Length);
+                        if (num == 0)
+                            break;
+                        start += num;
+                        left -= num;
+                    }
+                }
+             
+            }
+            catch (Exception ex)
+            {
+              
+                return false;
+            }
+            return true;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Lxsh.Project.WebSocket.ClientDemo
         static WebSocketSharp.WebSocket ws;
         static void Main(string[] args)
         {
-            ws = new WebSocketSharp.WebSocket("ws://127.0.0.1:8895/LxshProject");
+            ws = new WebSocketSharp.WebSocket("ws://localhost:9278/ws");
             {
                 ws.OnOpen += Ws_OnOpen;
                 ws.OnClose += Ws_OnClose;

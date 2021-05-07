@@ -179,6 +179,7 @@ namespace Lxsh.Project.Demo
 
         private void button2_Click(object sender, EventArgs e)
         {
+            throw new AggregateException();
             button2.Click -= button2_Click;
             MessageBox.Show("122");
 

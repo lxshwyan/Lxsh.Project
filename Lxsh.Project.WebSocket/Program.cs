@@ -30,7 +30,7 @@ namespace Lxsh.Project.WebSocketDemo
            // PostGuest();
 
         }
-
+        
         #region 人脸识别
         private static void Instance_OnMessage(string obj)
         {

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="Content/jquery-1.10.2.js"></script>
+    <script src="Content/json2.js"></script>
+</head>
+<body>
+    <h1>fdsfffffffffffffffffffff</h1>
+    <script type="text/javascript">
+
+        $(function () {
+            WS_InitClient();
+        })
+        function WS_InitClient() {
+            WS_Client = new WebSocket("ws://localhost:5000/ws")
+
+            WS_Client.onmessage = function (e) {
+                var json = JSON.parse(e.data);
+                alert(json.JsonString);
+            }
+            WS_Client.onopen = function () {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+                //  WS_Client.send("发送数据");
+                alert("数据发送中...");
+            };
+        }
+    </script>
+</body>
+</html>
+

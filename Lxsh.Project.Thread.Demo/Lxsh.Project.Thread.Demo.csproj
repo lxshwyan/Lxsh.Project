@@ -86,7 +86,11 @@
   <ItemGroup>
     <Content Include="ReMark.txt" />
     <Content Include="Task.txt" />
+    <Content Include="testVideo.html" />
     <Content Include="TextFile1.txt" />
+    <Content Include="videolib\css\video-js.min.css" />
+    <Content Include="videolib\js\video.min.js" />
+    <Content Include="videolib\videojs-flash.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

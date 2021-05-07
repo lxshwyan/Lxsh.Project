@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Lxsh.Project.JwtBearerDemo</name>
+    </assembly>
+    <members>
+        <member name="M:Lxsh.Project.JwtBearerDemo.Appsettings.app(System.String[])">
+            <summary>
+            封装要操作的字符
+            </summary>
+            <param name="sections">节点配置</param>
+            <returns></returns>
+        </member>
+        <member name="M:Lxsh.Project.JwtBearerDemo.Appsettings.app``1(System.String[])">
+            <summary>
+            递归获取配置信息数组
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="sections"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lxsh.Project.JwtBearerDemo.JwtHelper.IssueJwt(Lxsh.Project.JwtBearerDemo.TokenModelJwt)">
+            <summary>
+            颁发JWT字符串
+            </summary>
+            <param name="tokenModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Lxsh.Project.JwtBearerDemo.JwtHelper.SerializeJwt(System.String)">
+            <summary>
+            解析
+            </summary>
+            <param name="jwtStr"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Lxsh.Project.JwtBearerDemo.TokenModelJwt">
+            <summary>
+            令牌
+            </summary>
+        </member>
+        <member name="P:Lxsh.Project.JwtBearerDemo.TokenModelJwt.Uid">
+            <summary>
+            Id
+            </summary>
+        </member>
+        <member name="P:Lxsh.Project.JwtBearerDemo.TokenModelJwt.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:Lxsh.Project.JwtBearerDemo.TokenModelJwt.Work">
+            <summary>
+            职能
+            </summary>
+        </member>
+    </members>
+</doc>

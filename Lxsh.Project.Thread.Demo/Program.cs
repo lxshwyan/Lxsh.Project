@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,6 +18,16 @@ namespace Lxsh.Project.Thread.Demo
         [STAThread]
         static void Main()
         {
+            try
+            {
+                TestApi.CheckAPI();
+            }
+            catch (Exception ex)
+            {
+
+                
+            }  
+          
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new Form1());  
@@ -289,6 +300,31 @@ namespace Lxsh.Project.Thread.Demo
                 }
             }
             return list;
+        }
+
+       
+    }
+    public class TestApi
+    {
+        /// <summary>
+        /// 检查API
+        /// </summary>
+        /// <param name="SysHost"></param>
+        public static void CheckAPI()
+        {
+            #region 检查API
+
+            string url = "http://www.baidu.com";
+
+            WebRequest request = HttpWebRequest.Create(url);
+            request.Method = "Get";
+            request.Timeout = 60 * 1000;
+            using (WebResponse response = request.GetResponse())
+            {
+                Console.WriteLine("访问政策");
+            }
+
+            #endregion
         }
     }
 }

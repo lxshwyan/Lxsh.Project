@@ -32,8 +32,6 @@ namespace Lxsh.Project.TelDemo
                     Thread.Sleep(100);
                     Console.WriteLine($"第{j.ToString()}次调用"); 
                 }
-
-
             });
             Console.ReadLine();
         }
