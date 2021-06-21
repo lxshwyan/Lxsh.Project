@@ -19,6 +19,9 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Lxsh.Project.NetCoreWebApi.Policy;
 using Microsoft.AspNetCore.Authorization;
+using Lxsh.Project.NetCoreWebApi.MinGans;
+using Microsoft.Extensions.Primitives;
+using Newtonsoft;
 
 namespace Lxsh.Project.NetCoreWebApi
 {
@@ -35,50 +38,13 @@ namespace Lxsh.Project.NetCoreWebApi
         public void ConfigureServices(IServiceCollection services)
         {
           
-           #region MiniProfiler
+            #region MiniProfiler
             services.AddMiniProfiler(options =>
             {
                 options.RouteBasePath = "/profiler";
             });
             #endregion
 
-            //添加Swagger
-            services.AddSwaggerGen(option =>
-            {
-                option.SwaggerDoc("v1", new OpenApiInfo  //版本要一致
-                {
-                    Version = "v1",    //版本要一致
-                    Title = "Lanyp.App Swagger",
-                    Description = "基于.NET Core 3.1 的Api Swagger",
-                    Contact = new OpenApiContact { Name = "lxsh", Email = "", Url = new Uri("http://www.baidu.com") },
-                    License = new OpenApiLicense { Name = "lxsh许可证", Url = new Uri("http://www.baidu.com") }
-
-                }); ; ;
-                // 加载程序集的xml描述文档
-                var baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
-                //改文件名是从项目 “属性-->生成-->输出-->XML文档文件” 中得到的  或者为（System.AppDomain.CurrentDomain.FriendlyName + ".xml";）
-                var xmlFile = "Lxsh.Project.NetCoreWebApi.xml";
-                var xmlPath = Path.Combine(baseDirectory, xmlFile);
-                option.IncludeXmlComments(xmlPath,true);  //获取控制的注释，如果为false不显示
-
-                #region 加锁
-                var openApiSecurity = new OpenApiSecurityScheme
-                {
-                    Description = "JWT认证授权，使用直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
-                    Name = "Authorization",  //jwt 默认参数名称
-                    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置（请求头）
-                    Type = SecuritySchemeType.ApiKey
-                };
-
-               option.AddSecurityDefinition("oauth2", openApiSecurity);
-               option.OperationFilter<AddResponseHeadersFilter>();
-               option.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
-
-                //在header中添加token,传递到后台
-                option.OperationFilter<SecurityRequirementsOperationFilter>();
-                #endregion
-            });
-            services.AddControllers();
             #region 配置认证服务
 
             var Issurer = "lxsh.Auth";  //发行人
@@ -108,6 +74,61 @@ namespace Lxsh.Project.NetCoreWebApi
                 };
             });
             #endregion
+
+            #region Swagger
+            services.AddSwaggerGen(option =>
+            {
+                option.SwaggerDoc("v1", new OpenApiInfo  //版本要一致
+                {
+                    Version = "v1",    //版本要一致
+                    Title = "Lanyp.App Swagger",
+                    Description = "基于.NET Core 3.1 的Api Swagger",
+                    Contact = new OpenApiContact { Name = "lxsh", Email = "", Url = new Uri("http://www.baidu.com") },
+                    License = new OpenApiLicense { Name = "lxsh许可证", Url = new Uri("http://www.baidu.com") }
+
+                }); ; ;
+                // 加载程序集的xml描述文档
+                var baseDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+                //改文件名是从项目 “属性-->生成-->输出-->XML文档文件” 中得到的  或者为（System.AppDomain.CurrentDomain.FriendlyName + ".xml";）
+                var xmlFile = "Lxsh.Project.NetCoreWebApi.xml";
+                var xmlPath = Path.Combine(baseDirectory, xmlFile);
+                option.IncludeXmlComments(xmlPath, true);  //获取控制的注释，如果为false不显示
+
+                #region 加锁
+                var openApiSecurity = new OpenApiSecurityScheme
+                {
+                    Description = "JWT认证授权，使用直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
+                    Name = "Authorization",  //jwt 默认参数名称
+                    In = ParameterLocation.Header,  //jwt默认存放Authorization信息的位置（请求头）
+                    Type = SecuritySchemeType.ApiKey
+                };
+
+                option.AddSecurityDefinition("oauth2", openApiSecurity);
+                option.OperationFilter<AddResponseHeadersFilter>();
+                option.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();
+
+                //在header中添加token,传递到后台
+                option.OperationFilter<SecurityRequirementsOperationFilter>();
+                #endregion
+            });
+            #endregion
+
+            #region 敏感词过滤
+            MinGanProvider.Instance.SetKeys(Configuration.GetSection("IllegalKeywords").Get<List<string>>());
+            ChangeToken.OnChange(() => Configuration.GetReloadToken(), () =>
+            {
+                // 敏感词重载
+                MinGanProvider.Instance.SetKeys(Configuration.GetSection("IllegalKeywords").Get<List<string>>());
+            });
+            services.AddSingleton<IMinGanReplaceValidator, MinGanReplaceValidator>()
+               .AddSingleton<IMinGanCheckValidator, MinGanCheckValidator>();
+            #endregion
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.IgnoreNullValues = true;
+
+            });
             services.AddScoped<IAuthorizationHandler, PermissionRequirementHandler>();
             //基于自定义策略授权
             services.AddAuthorization(options =>

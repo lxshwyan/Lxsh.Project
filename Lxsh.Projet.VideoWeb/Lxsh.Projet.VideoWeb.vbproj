@@ -92,6 +92,9 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="jqueryDemo.html" />
+    <Content Include="JsDemo.html" />
+    <Content Include="jsLearn.js" />
     <Content Include="testVideo.html" />
     <Content Include="testVideoM3U8.html" />
     <Content Include="videolib\css\video-js.min.css" />

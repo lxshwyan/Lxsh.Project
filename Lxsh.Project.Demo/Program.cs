@@ -29,7 +29,7 @@ namespace Lxsh.Project.Demo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.ApplicationExit += Application_ApplicationExit;
-            Application.Run(new Form1());
+            Application.Run(new Form2());
         }
 
         private static void Application_ApplicationExit(object sender, EventArgs e)

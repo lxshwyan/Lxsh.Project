@@ -18,19 +18,44 @@ namespace Lxsh.Project.Thread.Demo
         [STAThread]
         static void Main()
         {
+            long jsTimeStamp =-2208931201000;
+            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
+            DateTime dt = startTime.AddMilliseconds(jsTimeStamp);
+            System.Console.WriteLine(dt.ToString("yyyy/MM/dd HH:mm:ss:ffff"));
+
+
+
+            #region 多线程访问集合问题
+            for (int i = 0; i < 1000; i++)
+            {
+                CacheTimeHelper.lastClearTimePerProduct.Add("AB" + Guid.NewGuid().ToString(), DateTime.Now);
+            }
+            for (int i = 0; i < 1000; i++)
+            {
+                Task.Run(() =>
+                {
+                    System.Threading.Thread.Sleep(1000);
+                    CacheTimeHelper.CheckCacheIsExpire("AB", Guid.NewGuid().ToString());
+                    Console.WriteLine("完成");
+                });
+            }
+            Console.ReadLine();
+            #endregion
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());  
+            #region Task void
             try
             {
-                TestApi.CheckAPI();
+              TaskVoid().Wait();
             }
             catch (Exception ex)
             {
 
-                
-            }  
-          
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());  
+                Console.WriteLine("Task线程异常:"+ex.StackTrace+Environment.NewLine+ex.Message + Environment.NewLine + ex.InnerException);
+            }
+            #endregion
+
             #region Flags
             //Permission permission = Permission.create | Permission.read | Permission.update | Permission.delete;
             //Console.WriteLine("1、枚举创建，并赋值……");
@@ -302,29 +327,19 @@ namespace Lxsh.Project.Thread.Demo
             return list;
         }
 
-       
-    }
-    public class TestApi
-    {
-        /// <summary>
-        /// 检查API
-        /// </summary>
-        /// <param name="SysHost"></param>
-        public static void CheckAPI()
+        public static async void Void()
         {
-            #region 检查API
+            //throw new Exception("Task线程异常");
 
-            string url = "http://www.baidu.com";
+            int age = int.Parse("Ten");
+            await Task.Run(() => { Console.WriteLine("Task线程执行"); });
+        }
+        public static async Task TaskVoid()
+        {
+            //throw new Exception("Task线程异常");
 
-            WebRequest request = HttpWebRequest.Create(url);
-            request.Method = "Get";
-            request.Timeout = 60 * 1000;
-            using (WebResponse response = request.GetResponse())
-            {
-                Console.WriteLine("访问政策");
-            }
-
-            #endregion
+            int age = int.Parse("Ten");
+            await Task.Run(() => { Console.WriteLine("Task线程执行"); });
         }
     }
 }

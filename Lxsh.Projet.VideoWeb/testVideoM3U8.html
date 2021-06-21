@@ -5,15 +5,41 @@
     <!-- 导入的videojs是7.0版本以上的，集成VHS协议库，可播放HLS流媒体视频 -->
     <link href="videolib/css/video-js.min.css" rel="stylesheet" type="text/css">
     <script src="videolib/js/video.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.8.3/jquery.min.js"></script>
 </head>
 <body>
+    <input type="button" onclick="getAccessToken()"  value="提交" />
     <video id='myvideo' width=960 height=540 class="video-js vjs-default-skin" controls>
-        <source src="https://open.ys7.com/v3/openlive/553288584_1_1.m3u8?expire=1620358213&id=310377712871268352&t=8ddcd27b12e72d35c01486cef83f855a1a90c9a04c861b9cb79593e6ac4b1512&ev=100">
+        <source src="https://hls01open.ys7.com/openlive/0ab2e5d31cc3484081eb20c1a5c77ac3.hd.m3u8">
     </video>
     <script>
+        //var player = videojs('myvideo', {}, function () { console.log('videojs播放器初始化成功') })
+        //player.play();
 
-            var player = videojs('myvideo', {}, function(){console.log('videojs播放器初始化成功')})
-            player.play();
+        function getAccessToken() {
+          
+            $.ajax({
+                type: "post",
+                url: "https://open.ys7.com/api/lapp/token/get",
+                data: { appKey: "adc3cfd7bae84e00be04feb838283567", appSecret: "fd5de629a3d5956c923fed0278a18cd2" },
+                dataType: "json",
+                success: function (data) {
+                    console.log(data)
+                    alert(data.data.accessToken)
+                    $.ajax({
+                        type: "post",
+                        url: "https://open.ys7.com/api/lapp/v2/live/address/get",
+                        data: { accessToken: data.data.accessToken, deviceSerial: "427734222" },
+                        dataType: "json",
+                        success: function (data) {
+                            console.log(data)
+                          
+                        }
+                    })
+                }
+            })
+           
+        }
     </script>
 </body>
 </html>

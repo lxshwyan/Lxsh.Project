@@ -12,11 +12,11 @@ namespace ConsoleAppTestSQL
     {
         static void Main(string[] args)
         {
+            #region MyRegion
             try
             {
                 GetAll();
                 Console.WriteLine("查询完成");
-
 
                 IFreeSql FreeSqlConnect = new FreeSql.FreeSqlBuilder().UseConnectionString(FreeSql.DataType.SqlServer, System.Configuration.ConfigurationManager.AppSettings["strConn"])
                   // .UseAutoSyncStructure(true) //自动同步实体结构到数据库
@@ -25,12 +25,18 @@ namespace ConsoleAppTestSQL
                 Console.WriteLine(row.Rows.Count);
 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
 
                 Console.WriteLine(ex.Message);
             }
             Console.ReadLine();
+            #endregion
+
+            using (DisposTest disposTest = new DisposTest())
+            {
+                disposTest.Call();
+            }
 
         }
 

@@ -18,6 +18,11 @@ namespace Lxsh.Project.NetCoreWebApi
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+              .ConfigureAppConfiguration((builderContext, config) =>
+              {
+                  config.AddJsonFile("IllegalKeywords.json", optional: false, reloadOnChange: true);// 配置可热重载
+                  config.AddJsonFile("IllegalUrls.json", optional: false, reloadOnChange: true);// 配置可热重载
+              })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

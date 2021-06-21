@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+
+    <h1>我的第一个 JavaScript</h1>
+    <p>
+        JavaScript 能够对事件作出反应。比如对按钮的点击：
+    </p>
+    <button type="button" id="dw" onclick="ds()">点我</button>
+    <input type="button" value="点我点我" onclick="testclick()">
+    <p id="demo"></p>
+    <script>
+
+            var person = {
+                name: "lxsh",
+                age: 30,
+                lastName: "sy",
+                fullName: function () {
+                    return this.name + "的年龄：" + this.age;
+                }
+            }
+            function testclick() {
+             
+                document.write(person.fullName());
+        }
+        function ds() {
+            var x = document.getElementById("dw");
+            x.innerHTML = "测试";
+            x.style.color = "#ff0000"
+            }
+
+            window.onload = function () {
+                var x;
+                var d = new Date().getDay();
+                switch (d) {
+                    case 0: x = "今天是星期日";
+                        break;
+                    case 1: x = "今天是星期一";
+                        break;
+                    case 2: x = "今天是星期二";
+                        break;
+                    case 3: x = "今天是星期三";
+                        break;
+                    case 4: x = "今天是星期四";
+                        break;
+                    case 5: x = "今天是星期五";
+                        break;
+                    case 6: x = "今天是星期六";
+                        break;
+                }
+                document.getElementById("demo").innerHTML = x;
+
+            }
+         
+          
+    </script>
+</body >
+  
+   
+</html>
