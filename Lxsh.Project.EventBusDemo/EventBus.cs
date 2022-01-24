@@ -135,6 +135,7 @@ namespace Lxsh.Project.EventBusDemo
                     var attrHandler = handler as EvAttrHandler;
                     var eventHandler = attrHandler.Handler as IEventHandler<TEvent>;
                     var eventAttr = attrHandler.Attr;
+                    // eventHandler.Handle(tEvent);
                     Task.Run(() =>
                     {
                         eventHandler.Handle(tEvent);
@@ -187,7 +188,7 @@ namespace Lxsh.Project.EventBusDemo
         private void SubscribeAction<TEvent>(Action<TEvent> eventHandlerFunc, SubscribeAttribute attr)
             where TEvent : IBusEvent
         {
-            SubscribeHandler<TEvent>(new ActionDelegatedEventHandler<TEvent>(eventHandlerFunc), attr);
+             SubscribeHandler<TEvent>(new ActionDelegatedEventHandler<TEvent>(eventHandlerFunc), attr);
         }
 
         /// <summary>

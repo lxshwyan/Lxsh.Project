@@ -25,6 +25,7 @@ using System.Web;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort = 4)]
     /// <summary>
     /// 中间件
     /// 记录用户方访问数据

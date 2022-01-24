@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authorization;
 using Lxsh.Project.NetCoreWebApi.MinGans;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft;
+using Microsoft.AspNetCore.Http;
 
 namespace Lxsh.Project.NetCoreWebApi
 {
@@ -123,7 +124,7 @@ namespace Lxsh.Project.NetCoreWebApi
             services.AddSingleton<IMinGanReplaceValidator, MinGanReplaceValidator>()
                .AddSingleton<IMinGanCheckValidator, MinGanCheckValidator>();
             #endregion
-
+           // services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
@@ -138,6 +139,7 @@ namespace Lxsh.Project.NetCoreWebApi
                     .Requirements
                     .Add(new PermissionRequirement("admin")));
             });
+          
             services.AddSingleton(new Appsettings(Configuration));
             services.AddCors();
         }
@@ -155,16 +157,7 @@ namespace Lxsh.Project.NetCoreWebApi
                 op.AllowAnyHeader();
             });
 
-            //api过期验证
-            app.UseExpirationTimeMidd();
-            // 静态文件路径
-            app.UseStaticFilesMidd();
-            // 记录请求与返回数据 
-            app.UseReuestResponseLog();
-            // 记录ip请求
-            app.UseIPLogMildd();
-            // 用户访问记录
-            app.UseRecordAccessLogsMildd();
+          
         
             app.UseMiniProfiler();
 
@@ -178,9 +171,7 @@ namespace Lxsh.Project.NetCoreWebApi
                 KeepAliveInterval = TimeSpan.FromSeconds(60),
                 ReceiveBufferSize = 2 * 1024
             });
-            app.UseWebsocketMiddleware();
-            // 开启异常中间件，要放到最后
-            app.UseExceptionHandlerMidd();
+            MiddlewareExtensions.UseMiddlewares(app);
             //启用中间件服务生成Swagger作为JSON终结点
             app.UseSwagger();
             //启用中间件服务对swagger-ui，指定Swagger JSON终结点

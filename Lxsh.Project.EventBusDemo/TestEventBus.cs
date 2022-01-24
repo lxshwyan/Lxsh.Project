@@ -4,46 +4,35 @@ using System.Text;
 
 namespace Lxsh.Project.EventBusDemo
 {
-    public class TestEventBus
+ 
+    public class TestEventBus1
     {
-        public void TestEventBusRegister()
+        public TestEventBus1()
         {
             EventBus.Instance.Register(this);
-            EventBus.Instance.Publish<EvOnLoginSuccess>(new EvOnLoginSuccess(new LoginResultDto { Id = "321", UserType ="1", Success = true }));
-            Console.WriteLine("完成");
         }
-
         [Subscribe(ThreadMode = EventThreadMode.MAIN)]
         public void OnLoginSuccess(EvOnLoginSuccess ev)
         {
             if (ev.Info != null && !string.IsNullOrWhiteSpace(ev.Info?.UserType))
             {
-                Console.WriteLine(ev.Info.Id);
+                Console.WriteLine(this.GetType().FullName);
             }
         }
-
+    }
+    public class TestEventBus2
+    {
+      
+        public TestEventBus2()
+        {
+            EventBus.Instance.Register(this);
+        }
         [Subscribe(ThreadMode = EventThreadMode.MAIN)]
-        public void OnLoginSuccess1(EvOnLoginSuccess ev)
+        public void OnLoginSuccess(EvOnLoginSuccess ev)
         {
             if (ev.Info != null && !string.IsNullOrWhiteSpace(ev.Info?.UserType))
             {
-                Console.WriteLine(ev.Info.Success);
-            }
-        }
-        [Subscribe(ThreadMode = EventThreadMode.MAIN)]
-        public void OnLoginSuccess2(EvOnLoginSuccess ev)
-        {
-            if (ev.Info != null && !string.IsNullOrWhiteSpace(ev.Info?.UserType))
-            {
-                Console.WriteLine(ev.Info.UserType);
-            }
-        }
-        [Subscribe(ThreadMode = EventThreadMode.MAIN)]
-        public void OnLoginSuccess3(EvOnLoginSuccess ev)
-        {
-            if (ev.Info != null && !string.IsNullOrWhiteSpace(ev.Info?.UserType))
-            {
-                Console.WriteLine(ev.Info);
+                Console.WriteLine(this.GetType().FullName);
             }
         }
     }

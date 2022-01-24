@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort = 6)]
     public class WebsocketMiddleware
     {
         private readonly RequestDelegate _next;

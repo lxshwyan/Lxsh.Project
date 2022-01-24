@@ -13,5 +13,6 @@ namespace Lxsh.Project.NetCoreWebApi.Controllers
     [Route("api/[Controller]/[action]")]
     public class BaseController : Controller
     {
+      
     }
 }

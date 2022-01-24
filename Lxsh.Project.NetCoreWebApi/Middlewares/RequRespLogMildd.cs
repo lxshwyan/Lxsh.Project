@@ -6,9 +6,11 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using static Lxsh.Project.NetCoreWebApi.Middlewares.MiddlewareExtensions;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort = 5)]
     /// <summary>
     /// 中间件
     /// 记录请求和响应数据

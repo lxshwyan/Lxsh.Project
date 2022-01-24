@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.spContainer = new System.Windows.Forms.SplitContainer();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.bnBooks = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
@@ -44,7 +45,14 @@
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.dgBooks = new System.Windows.Forms.DataGridView();
+            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAuthor = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPress = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gbDetail = new System.Windows.Forms.GroupBox();
+            this.pbUrl2 = new System.Windows.Forms.PictureBox();
+            this.pbUrl = new System.Windows.Forms.PictureBox();
+            this.pbIsbn = new System.Windows.Forms.PictureBox();
             this.txtIntroduction = new System.Windows.Forms.TextBox();
             this.txtPress = new System.Windows.Forms.TextBox();
             this.txtAuthor = new System.Windows.Forms.TextBox();
@@ -56,13 +64,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.bsBooks = new System.Windows.Forms.BindingSource(this.components);
-            this.pbIsbn = new System.Windows.Forms.PictureBox();
-            this.pbUrl = new System.Windows.Forms.PictureBox();
-            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAuthor = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPress = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.pbUrl2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.spContainer)).BeginInit();
             this.spContainer.Panel1.SuspendLayout();
             this.spContainer.Panel2.SuspendLayout();
@@ -71,10 +72,10 @@
             this.bnBooks.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgBooks)).BeginInit();
             this.gbDetail.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsBooks)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbIsbn)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbUrl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbUrl2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbUrl)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIsbn)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsBooks)).BeginInit();
             this.SuspendLayout();
             // 
             // spContainer
@@ -85,6 +86,7 @@
             // 
             // spContainer.Panel1
             // 
+            this.spContainer.Panel1.Controls.Add(this.panel1);
             this.spContainer.Panel1.Controls.Add(this.bnBooks);
             this.spContainer.Panel1.Controls.Add(this.dgBooks);
             // 
@@ -94,6 +96,17 @@
             this.spContainer.Size = new System.Drawing.Size(684, 462);
             this.spContainer.SplitterDistance = 380;
             this.spContainer.TabIndex = 0;
+            // 
+            // panel1
+            // 
+            this.panel1.AllowDrop = true;
+            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.panel1.Location = new System.Drawing.Point(45, 104);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(243, 182);
+            this.panel1.TabIndex = 2;
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.panel1_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.panel1_DragEnter);
             // 
             // bnBooks
             // 
@@ -233,6 +246,35 @@
             this.dgBooks.TabIndex = 0;
             this.dgBooks.SelectionChanged += new System.EventHandler(this.dgBooks_SelectionChanged);
             // 
+            // colId
+            // 
+            this.colId.DataPropertyName = "ID";
+            this.colId.HeaderText = "ID";
+            this.colId.Name = "colId";
+            this.colId.ReadOnly = true;
+            this.colId.Width = 30;
+            // 
+            // colName
+            // 
+            this.colName.DataPropertyName = "Name";
+            this.colName.HeaderText = "书名";
+            this.colName.Name = "colName";
+            this.colName.ReadOnly = true;
+            // 
+            // colAuthor
+            // 
+            this.colAuthor.DataPropertyName = "Author";
+            this.colAuthor.HeaderText = "作者";
+            this.colAuthor.Name = "colAuthor";
+            this.colAuthor.ReadOnly = true;
+            // 
+            // colPress
+            // 
+            this.colPress.DataPropertyName = "Press";
+            this.colPress.HeaderText = "出版社";
+            this.colPress.Name = "colPress";
+            this.colPress.ReadOnly = true;
+            // 
             // gbDetail
             // 
             this.gbDetail.Controls.Add(this.pbUrl2);
@@ -256,13 +298,38 @@
             this.gbDetail.TabStop = false;
             this.gbDetail.Text = "详细信息";
             // 
+            // pbUrl2
+            // 
+            this.pbUrl2.Location = new System.Drawing.Point(188, 208);
+            this.pbUrl2.Name = "pbUrl2";
+            this.pbUrl2.Size = new System.Drawing.Size(100, 100);
+            this.pbUrl2.TabIndex = 4;
+            this.pbUrl2.TabStop = false;
+            // 
+            // pbUrl
+            // 
+            this.pbUrl.Location = new System.Drawing.Point(83, 208);
+            this.pbUrl.Name = "pbUrl";
+            this.pbUrl.Size = new System.Drawing.Size(100, 100);
+            this.pbUrl.TabIndex = 3;
+            this.pbUrl.TabStop = false;
+            this.pbUrl.DragDrop += new System.Windows.Forms.DragEventHandler(this.pbUrl_DragDrop);
+            // 
+            // pbIsbn
+            // 
+            this.pbIsbn.Location = new System.Drawing.Point(83, 149);
+            this.pbIsbn.Name = "pbIsbn";
+            this.pbIsbn.Size = new System.Drawing.Size(203, 53);
+            this.pbIsbn.TabIndex = 2;
+            this.pbIsbn.TabStop = false;
+            // 
             // txtIntroduction
             // 
             this.txtIntroduction.Location = new System.Drawing.Point(83, 313);
             this.txtIntroduction.Multiline = true;
             this.txtIntroduction.Name = "txtIntroduction";
             this.txtIntroduction.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtIntroduction.Size = new System.Drawing.Size(203, 100);
+            this.txtIntroduction.Size = new System.Drawing.Size(203, 46);
             this.txtIntroduction.TabIndex = 1;
             // 
             // txtPress
@@ -340,59 +407,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "书名:";
             // 
-            // pbIsbn
-            // 
-            this.pbIsbn.Location = new System.Drawing.Point(83, 149);
-            this.pbIsbn.Name = "pbIsbn";
-            this.pbIsbn.Size = new System.Drawing.Size(203, 53);
-            this.pbIsbn.TabIndex = 2;
-            this.pbIsbn.TabStop = false;
-            // 
-            // pbUrl
-            // 
-            this.pbUrl.Location = new System.Drawing.Point(83, 208);
-            this.pbUrl.Name = "pbUrl";
-            this.pbUrl.Size = new System.Drawing.Size(100, 100);
-            this.pbUrl.TabIndex = 3;
-            this.pbUrl.TabStop = false;
-            // 
-            // colId
-            // 
-            this.colId.DataPropertyName = "ID";
-            this.colId.HeaderText = "ID";
-            this.colId.Name = "colId";
-            this.colId.ReadOnly = true;
-            this.colId.Width = 30;
-            // 
-            // colName
-            // 
-            this.colName.DataPropertyName = "Name";
-            this.colName.HeaderText = "书名";
-            this.colName.Name = "colName";
-            this.colName.ReadOnly = true;
-            // 
-            // colAuthor
-            // 
-            this.colAuthor.DataPropertyName = "Author";
-            this.colAuthor.HeaderText = "作者";
-            this.colAuthor.Name = "colAuthor";
-            this.colAuthor.ReadOnly = true;
-            // 
-            // colPress
-            // 
-            this.colPress.DataPropertyName = "Press";
-            this.colPress.HeaderText = "出版社";
-            this.colPress.Name = "colPress";
-            this.colPress.ReadOnly = true;
-            // 
-            // pbUrl2
-            // 
-            this.pbUrl2.Location = new System.Drawing.Point(188, 208);
-            this.pbUrl2.Name = "pbUrl2";
-            this.pbUrl2.Size = new System.Drawing.Size(100, 100);
-            this.pbUrl2.TabIndex = 4;
-            this.pbUrl2.TabStop = false;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -413,10 +427,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgBooks)).EndInit();
             this.gbDetail.ResumeLayout(false);
             this.gbDetail.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsBooks)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbIsbn)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbUrl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbUrl2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbUrl)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbIsbn)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsBooks)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -456,6 +470,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colAuthor;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPress;
         private System.Windows.Forms.PictureBox pbUrl2;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

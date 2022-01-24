@@ -40,8 +40,10 @@ namespace Lxsh.Project.WebSocketServerTest
             //启动服务端
             Ws_Server = new WebSocketServer(8895, false);
             Ws_Server.Log.Level = LogLevel.Error;
+          
             Ws_Server.AddWebSocketService<SfWebPlusCall>("/LxshProject");
             Ws_Server.Start();
+          
         }
 
         private void DoReloadPlayer(object sender, EventArgs e)

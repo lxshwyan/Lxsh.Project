@@ -13,6 +13,12 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
     public class Program
     {
         public static void Main(string[] args)
+        {
+            MQHelper();
+
+        }
+
+        public static void MQHelper()
         {    
             string input = "";
             string strErrorMsg = "";
@@ -54,6 +60,8 @@ namespace Lxsh.Project.Common.RabbbitMQ.Demo
 
                 tMQHelper.TopicSubscribe(Guid.NewGuid().ToString(), s => Console.WriteLine("当前收到信息："+s.Body.FromJson<SystemMessage>().Content),true, CategoryMessage.System.ToString() + ".*", CategoryMessage.Alarm.ToString() + ".*");
                 Console.WriteLine("Please enter a message. 'Quit' to quit.");
+
+             
             }
         }   
        

@@ -2,9 +2,11 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
+using static Lxsh.Project.NetCoreWebApi.Middlewares.MiddlewareExtensions;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort =1)]
     public class ExceptionHandlerMidd
     {
         private readonly RequestDelegate _next;

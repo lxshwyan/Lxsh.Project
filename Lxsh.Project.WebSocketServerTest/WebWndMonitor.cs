@@ -182,6 +182,7 @@ namespace Lxsh.Project.WebSocketServerTest
             //    return;
             //}
             //LastConnectedPort = Context.UserEndPoint.Port;
+            Context.WebSocket.Send("FDSFDSFDSFD");
             base.OnOpen();
         }
 

@@ -41,7 +41,7 @@ namespace Lxsh.Project.NetCoreWebApi.Controllers
                 var nbf = DateTime.UtcNow;
                 //expires   //过期时间
                 // long Exp = new DateTimeOffset(DateTime.Now.AddSeconds(1000)).ToUnixTimeSeconds();
-                var Exp = DateTime.UtcNow.AddSeconds(100);
+                var Exp = DateTime.UtcNow.AddDays(100);
                 //signingCredentials  签名凭证
                 string sign = "sifangboruiyanfayibu"; //SecurityKey 的长度必须 大于等于 16个字符
                 var secret = Encoding.UTF8.GetBytes(sign);
@@ -55,7 +55,8 @@ namespace Lxsh.Project.NetCoreWebApi.Controllers
                 var JwtHander = new JwtSecurityTokenHandler();
 
                 var token = JwtHander.WriteToken(jwt);
-
+                Request.HttpContext.User.AddIdentity(new ClaimsIdentity(claims));
+              
                 return Ok(new
                 {
                     access_token = token,

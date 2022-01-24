@@ -17,9 +17,11 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using static Lxsh.Project.NetCoreWebApi.Middlewares.MiddlewareExtensions;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort = 3)]
     public class IPLogMildd
     {
         private readonly ILogger<IPLogMildd> _logger;

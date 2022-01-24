@@ -20,7 +20,7 @@ namespace Lxsh.Project.AutoSizeForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //asc.controlAutoSize(this);
+          //  asc.controlAutoSize(this);
 
         }
 

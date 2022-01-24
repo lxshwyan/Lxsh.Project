@@ -45,6 +45,7 @@
             this.axWindowsMediaPlayer1 = new AxWMPLib.AxWindowsMediaPlayer();
             this.button9 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBoxEx1 = new Lxsh.Project.Common.Customers.GroupBoxEx(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.axWindowsMediaPlayer1)).BeginInit();
@@ -189,11 +190,22 @@
             this.textBox1.TabIndex = 13;
             this.textBox1.Text = "李小双刷卡成功";
             // 
+            // groupBoxEx1
+            // 
+            this.groupBoxEx1.BorderColor = System.Drawing.Color.Red;
+            this.groupBoxEx1.Location = new System.Drawing.Point(361, 60);
+            this.groupBoxEx1.Name = "groupBoxEx1";
+            this.groupBoxEx1.Size = new System.Drawing.Size(200, 100);
+            this.groupBoxEx1.TabIndex = 14;
+            this.groupBoxEx1.TabStop = false;
+            this.groupBoxEx1.Text = "groupBoxEx1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(722, 361);
+            this.Controls.Add(this.groupBoxEx1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.axWindowsMediaPlayer1);
@@ -237,6 +249,7 @@
         private AxWMPLib.AxWindowsMediaPlayer axWindowsMediaPlayer1;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.TextBox textBox1;
+        private Common.Customers.GroupBoxEx groupBoxEx1;
     }
 }
 

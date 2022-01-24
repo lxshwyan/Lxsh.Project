@@ -140,6 +140,7 @@ namespace ConsoleAppTestSQL
                     {
                         connection.Open();
                         int rows = cmd.ExecuteNonQuery();
+                       
                         return rows;
                     }
                     catch (System.Data.SqlClient.SqlException e)

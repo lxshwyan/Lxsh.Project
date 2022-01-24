@@ -161,6 +161,10 @@
       <Project>{546e6400-8fb0-4642-b286-9ce2bf9f320a}</Project>
       <Name>SFBR.RabbitMQ</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Lxsh.Project.Common\Lxsh.Project.Common.csproj">
+      <Project>{f3d3ff1e-4242-402b-8e64-03b082a80e29}</Project>
+      <Name>Lxsh.Project.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="01.png" />

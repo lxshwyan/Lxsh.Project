@@ -23,5 +23,7 @@
     <PackageReference Include="ToolGood.Words" Version="3.0.2.4" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
+
 
 </Project>

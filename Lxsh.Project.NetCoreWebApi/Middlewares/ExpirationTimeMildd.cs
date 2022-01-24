@@ -4,9 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static Lxsh.Project.NetCoreWebApi.Middlewares.MiddlewareExtensions;
 
 namespace Lxsh.Project.NetCoreWebApi.Middlewares
 {
+    [MiddlewareRegister(Sort = 2)]
     /// <summary>
     /// 中间件
     /// 验证api过期时间

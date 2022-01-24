@@ -142,6 +142,12 @@
     <Compile Include="Cache\RedisCache.cs" />
     <Compile Include="Cache\SystemCache.cs" />
     <Compile Include="Config\PropertiesParser.cs" />
+    <Compile Include="Customers\GroupBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Customers\GroupBoxEx.Designer.cs">
+      <DependentUpon>GroupBoxEx.cs</DependentUpon>
+    </Compile>
     <Compile Include="DBExtend\IUnitOfWork.cs" />
     <Compile Include="DBExtend\UnitOfWork.cs" />
     <Compile Include="DisposeBase.cs" />

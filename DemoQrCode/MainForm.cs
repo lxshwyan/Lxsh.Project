@@ -58,5 +58,20 @@ namespace DemoQrCode
                 }
             }
         }
+
+        private void pbUrl_DragDrop(object sender, DragEventArgs e)
+        {
+
+        }
+
+        private void panel1_DragDrop(object sender, DragEventArgs e)
+        {
+           
+        }
+
+        private void panel1_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Move;
+        }
     }
 }

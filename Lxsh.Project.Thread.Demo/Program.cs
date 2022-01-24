@@ -18,12 +18,35 @@ namespace Lxsh.Project.Thread.Demo
         [STAThread]
         static void Main()
         {
-            long jsTimeStamp =-2208931201000;
-            System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区
-            DateTime dt = startTime.AddMilliseconds(jsTimeStamp);
-            System.Console.WriteLine(dt.ToString("yyyy/MM/dd HH:mm:ss:ffff"));
+
+            TestParallel();
+            Console.WriteLine("执行完成");
+            Console.ReadKey();
 
 
+
+
+            #region 任务取消
+            var ts = new CancellationTokenSource();
+            var ct = ts.Token;
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    Console.WriteLine("task 正在执行");
+                    System.Threading.Thread.Sleep(100);
+                    if (ct.IsCancellationRequested)
+                    {
+                        Console.WriteLine("task canceld");
+                        break;
+                    }
+                }
+            }
+            );
+            System.Threading.Thread.Sleep(2000);
+            ts.Cancel();
+            Console.ReadLine();
+            #endregion
 
             #region 多线程访问集合问题
             for (int i = 0; i < 1000; i++)
@@ -161,7 +184,7 @@ namespace Lxsh.Project.Thread.Demo
             // task2.Start();
             //  task1.Wait();
             //  task2.Wait();
-            //  Task.WaitAll(task1, task2); //两个线程全部完成后才执行后面 阻塞主线程
+            // Task.WaitAll(task1, task2); //两个线程全部完成后才执行后面 阻塞主线程
             //  Task.WaitAny(task1, task2);  //两个线程有一个完成后就执行后面     阻塞主线程
             // Task.WhenAll(task1, task2).ContinueWith(t => { Console.WriteLine("两个线程执行完成"); });//不阻塞主线程
 
@@ -340,6 +363,19 @@ namespace Lxsh.Project.Thread.Demo
 
             int age = int.Parse("Ten");
             await Task.Run(() => { Console.WriteLine("Task线程执行"); });
+        }
+
+        public static  void TestParallel()
+        {
+            List<string> vString = new List<string>();
+            Enumerable.Range(0, 10).ToList().ForEach(
+                item => vString.Add(item.ToString()));
+
+            vString.AsParallel().ForAll(item =>
+            {
+                Console.WriteLine(DateTime.Now.ToString()+"==="+ System.Threading.Thread.CurrentThread.ManagedThreadId);
+                System.Threading.Thread.Sleep(1000*int.Parse(item));
+            });
         }
     }
 }
