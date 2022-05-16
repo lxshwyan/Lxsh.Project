@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="IdentityModel" Version="4.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.10" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.18" />
     <PackageReference Include="MiniProfiler" Version="4.2.22" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
